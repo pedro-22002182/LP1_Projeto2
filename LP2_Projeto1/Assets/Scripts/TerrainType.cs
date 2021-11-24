@@ -1,11 +1,9 @@
-public class TerrainType
+public enum TerrainType
 {
-    public enum terrainType
-    {
-        Desert,
-        Grassland,
-        Hills,
-        Mountain,
-        Ocean
-    }
+    Desert,
+    Grassland,
+    Hills,
+    Mountain,
+    Ocean
 }
+
