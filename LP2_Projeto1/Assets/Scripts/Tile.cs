@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    private ICollection<IResource> resources;
+    public ICollection<IResource> resources;
     private int baseGoldValue;
     private int baseFoodValue;
 
