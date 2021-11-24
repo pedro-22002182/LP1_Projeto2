@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class View : MonoBehaviour
 {
@@ -13,11 +14,11 @@ public class View : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        int collumns = map.NColumns;
-        int lines = map.NLines;
+        int collumns = map.Cols;
+        int lines = map.Rows;
 
         SetGridLayout(lines, collumns);
-        BuildMap(lines, collumns);
+        BuildViewMap(lines, collumns);
         
 
         Destroy(tile);
@@ -31,7 +32,7 @@ public class View : MonoBehaviour
         gridLayout.cellSize = new Vector2(800 / collumns, 600 / lines);
     }
 
-    private void BuildMap(int lines, int collumns)
+    private void BuildViewMap(int lines, int collumns)
     {
         for(int i = 0; i < lines; i++)
         {
@@ -39,7 +40,17 @@ public class View : MonoBehaviour
             {
                 GameObject newTile = Instantiate(tile, transform);
                 newTile.transform.parent = tile.transform.parent;
+
+                newTile.transform.GetChild(0).GetComponent<TextMeshPro>().text = newTile.GetComponent<Tile>().GoldProduced.ToString();
+                newTile.transform.GetChild(1).GetComponent<TextMeshPro>().text = newTile.GetComponent<Tile>().FoodProduced.ToString();
             }
         }
+    }
+
+
+    //Ativar Detalhes Tile
+    public void OpenTile()
+    {
+        
     }
 }
