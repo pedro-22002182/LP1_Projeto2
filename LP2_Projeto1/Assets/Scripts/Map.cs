@@ -4,20 +4,19 @@ using UnityEngine;
 
 public class Map : MonoBehaviour
 {
-    private Tile[,] tiles;
-    public int NLines {get;}
-    public int NColumns {get;}
+    private readonly int[,] map;
 
-    public Map(int lines, int columns)
+    public int this[int row, int col]
     {
-        NLines = lines;
-        NColumns = columns;
-
-        tiles = new Tile[NLines, NColumns];
+        get => map[row, col];
+        set => map[row, col] = value;
     }
 
-    public void SetBuildMap(Tile tile, int line, int collumn)
+    public int Rows => map.GetLength(0);
+    public int Cols => map.GetLength(1);
+
+    public Map(int rows, int cols)
     {
-        tiles[line, collumn] = tile;
+        map = new int[rows, cols];
     }
 }
