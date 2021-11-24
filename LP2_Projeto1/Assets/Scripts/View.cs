@@ -40,6 +40,8 @@ public class View : MonoBehaviour
             {
                 GameObject newTileGameObject = Instantiate(tile, transform);
                 newTileGameObject.transform.parent = tile.transform.parent;
+
+                //FALTA DAR A INFORMAÇÃO AO novo Gameobject DO RESPETIVO TILE (para assim poder abrir)
                 
                 newTileGameObject.transform.GetChild(0).GetComponent<TextMeshPro>().text = map.GetTile(i,y).GoldProduced.ToString();
                 newTileGameObject.transform.GetChild(1).GetComponent<TextMeshPro>().text = map.GetTile(i,y).FoodProduced.ToString();
