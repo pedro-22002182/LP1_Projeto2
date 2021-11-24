@@ -20,4 +20,9 @@ public class Map : MonoBehaviour
     {
         tiles[line, collumn] = tile;
     }
+
+    public Tile GetTile(int line, int collumn)
+    {
+        return tiles[line, collumn];
+    }
 }

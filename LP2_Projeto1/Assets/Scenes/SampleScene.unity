@@ -1042,6 +1042,7 @@ GameObject:
   - component: {fileID: 1247084171}
   - component: {fileID: 1247084170}
   - component: {fileID: 1247084169}
+  - component: {fileID: 1247084172}
   m_Layer: 5
   m_Name: Tile
   m_TagString: Untagged
@@ -1117,10 +1118,10 @@ MonoBehaviour:
       - m_Target: {fileID: 1459467537}
         m_TargetAssemblyTypeName: View, Assembly-CSharp
         m_MethodName: OpenTile
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1247084172}
+          m_ObjectArgumentAssemblyTypeName: Tile, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1164,6 +1165,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1247084167}
   m_CullTransparentMesh: 1
+--- !u!114 &1247084172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1247084167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5154143ab584e5746919fc0b6886796e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1459467532
 GameObject:
   m_ObjectHideFlags: 0
@@ -1279,6 +1292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tile: {fileID: 1247084167}
+  detailTile: {fileID: 1642057940}
   gridLayout: {fileID: 1805367709}
 --- !u!1 &1569456083
 GameObject:
@@ -1426,12 +1440,12 @@ GameObject:
   - component: {fileID: 1642057943}
   - component: {fileID: 1642057942}
   m_Layer: 5
-  m_Name: DetailField
+  m_Name: DetailTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1642057941
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1441,7 +1455,7 @@ RectTransform:
   m_GameObject: {fileID: 1642057940}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.595456, y: 0.595456, z: 0.595456}
+  m_LocalScale: {x: 1.8656232, y: 1.8656232, z: 1.8656232}
   m_Children:
   - {fileID: 877896873}
   - {fileID: 1569456084}
