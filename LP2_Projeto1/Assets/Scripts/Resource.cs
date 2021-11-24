@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Resource : IResource
 {
     public ResourceType Type { get; set; }
@@ -11,8 +7,12 @@ public class Resource : IResource
     public Resource(ResourceType type)
     {
         Type = type;
+        DefineValues();  
+    }
 
-        switch (type)
+    private void DefineValues()
+    {
+        switch (Type)
         {
             case ResourceType.Plants:
                 GoldValue = 1;
