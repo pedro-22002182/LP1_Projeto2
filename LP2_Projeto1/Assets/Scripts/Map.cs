@@ -5,15 +5,15 @@ using UnityEngine;
 public class Map : MonoBehaviour
 {
     private Tile[,] tiles;
-    private int nLines;
-    private int nColumns;
+    public int NLines {get;}
+    public int NColumns {get;}
 
     public Map(int lines, int columns)
     {
-        nLines = lines;
-        nColumns = columns;
+        NLines = lines;
+        NColumns = columns;
 
-        tiles = new Tile[nLines, nColumns];
+        tiles = new Tile[NLines, NColumns];
     }
 
     public void SetBuildMap(Tile tile, int line, int collumn)
