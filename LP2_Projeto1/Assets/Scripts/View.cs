@@ -14,11 +14,11 @@ public class View : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        int collumns = map.NColumns;
-        int lines = map.NLines;
+        int collumns = map.Cols;
+        int rows = map.Rows;
 
-        SetGridLayout(lines, collumns);
-        BuildViewMap(lines, collumns);
+        SetGridLayout(rows, collumns);
+        BuildViewMap(rows, collumns);
         
 
         Destroy(tile);
