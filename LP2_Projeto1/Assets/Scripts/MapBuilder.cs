@@ -8,6 +8,7 @@ using System;
 public class MapBuilder : MonoBehaviour
 {
     private Map map;
+    private readonly string[] availableResources = {"plants","animals","metals","fossilfuel","luxury","pollution"};
 
     // Start is called before the first frame update
     void Start()
@@ -44,15 +45,12 @@ public class MapBuilder : MonoBehaviour
     {
         //ler ficheiro
         string[] fileLines = File.ReadAllLines(FileBrowser.Result[0]);
+        ICollection<Resource> currentResources = new List<Resource>();
 
         map = new Map(GetMapSize(fileLines[0]));
 
 
         //construir mapa consoante ficheiro
-        
-
-
-
         //mudar de scene com o mapa e depois quando inicia na outra scene a view capta logo o mapa e gg
     }
 
@@ -63,5 +61,23 @@ public class MapBuilder : MonoBehaviour
         cols = Int32.Parse(line.Split()[1]);
 
         return (rows, cols);
+    }
+
+    private void GetResources(string[] line, ICollection<Resource> resourceList)
+    {
+        for(int i = 1; i < line.Length; i++)
+        {
+            if(Array.Exists(availableResources, r => r == line[i]))
+            {
+                resourceList.Add(new Resource(line[i]));
+            }
+            else if(line[i] == "#") break;
+            else
+            {
+                Debug.Log("Ficheiro errado");
+                //FAZER BOTAO PARA ABRIR SCENE NOVAMENTE
+            }
+
+        }
     }
 }
