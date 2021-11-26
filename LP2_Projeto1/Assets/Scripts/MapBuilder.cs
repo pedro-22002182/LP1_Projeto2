@@ -7,8 +7,8 @@ using System;
 
 public class MapBuilder : MonoBehaviour
 {
-    private Map map;
-    private readonly string[] availableResources = {"plants","animals","metals","fossilfuel","luxury","pollution"};
+    private Map _map;
+    private readonly string[] _availableResources = {"plants","animals","metals","fossilfuel","luxury","pollution"};
 
     // Start is called before the first frame update
     void Start()
@@ -44,14 +44,45 @@ public class MapBuilder : MonoBehaviour
     private void BuildMap()
     {
         //ler ficheiro
+        int count = 1, currentLine = 0, currentCol = 0;
         string[] fileLines = File.ReadAllLines(FileBrowser.Result[0]);
         ICollection<Resource> currentResources = new List<Resource>();
 
-        map = new Map(GetMapSize(fileLines[0]));
+        _map = new Map(GetMapSize(fileLines[0]));
 
+        while (count <= (_map.Rows * _map.Cols))
+        {
+            // Atualizar linha atual
+            string[] fileLine = fileLines[count].Split();
 
-        //construir mapa consoante ficheiro
-        //mudar de scene com o mapa e depois quando inicia na outra scene a view capta logo o mapa e gg
+            // Obter o tipo de terreno
+            string currentTerrain = fileLine[0];
+
+            // Limpar a lista de recursos a aplicar ao terreno
+            currentResources.Clear();
+
+            // Obter recursos, caso haja algum
+            if (fileLine.Length > 1)
+            {
+                GetResources(fileLine, currentResources);
+            }
+
+            _map.SetTile(currentLine, currentCol, new Tile(currentTerrain, currentResources));
+
+            // Ultima coluna ? Passar para a proxima linha : Avancar para a proxima coluna
+            if (count % _map.Cols == 0)
+            {
+                currentLine++;
+                currentCol = 0;
+                count++;
+                continue; // continue passa para a proxima iteracao do ciclo, saltando o codigo que poderia vir a seguir
+            }
+            else
+            {
+                currentCol++;
+                count++;
+            }
+        }
     }
 
     private (int rows, int cols) GetMapSize(string line)
@@ -67,7 +98,7 @@ public class MapBuilder : MonoBehaviour
     {
         for(int i = 1; i < line.Length; i++)
         {
-            if(Array.Exists(availableResources, r => r == line[i]))
+            if(Array.Exists(_availableResources, r => r == line[i]))
             {
                 resourceList.Add(new Resource(line[i]));
             }
