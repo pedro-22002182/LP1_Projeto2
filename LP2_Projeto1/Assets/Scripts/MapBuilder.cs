@@ -4,11 +4,19 @@ using UnityEngine;
 using System.IO;
 using SimpleFileBrowser;
 using System;
+using UnityEngine.SceneManagement;
 
 public class MapBuilder : MonoBehaviour
 {
-    private Map _map;
+    [SerializeField] private Map _map;
     private readonly string[] _availableResources = {"plants","animals","metals","fossilfuel","luxury","pollution"};
+
+
+    void Awake() 
+    {
+        DontDestroyOnLoad(_map.gameObject);
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +36,7 @@ public class MapBuilder : MonoBehaviour
 
         if( FileBrowser.Success )
 		{
+            /*
 			for( int i = 0; i < FileBrowser.Result.Length; i++ )
 				Debug.Log( FileBrowser.Result[i] );
 
@@ -37,7 +46,10 @@ public class MapBuilder : MonoBehaviour
 			// Or, copy the first file to persistentDataPath
 			string destinationPath = Path.Combine( Application.persistentDataPath, FileBrowserHelpers.GetFilename( FileBrowser.Result[0] ) );
 			FileBrowserHelpers.CopyFile( FileBrowser.Result[0], destinationPath );
-        
+            */
+
+            BuildMap();
+            SceneManager.LoadScene("jogo");
 		}
     }
 
@@ -48,7 +60,8 @@ public class MapBuilder : MonoBehaviour
         string[] fileLines = File.ReadAllLines(FileBrowser.Result[0]);
         ICollection<Resource> currentResources = new List<Resource>();
 
-        _map = new Map(GetMapSize(fileLines[0]));
+        //_map = new Map(GetMapSize(fileLines[0]));
+        _map.SetSize(GetMapSize(fileLines[0]));
 
         while (count <= (_map.Rows * _map.Cols))
         {

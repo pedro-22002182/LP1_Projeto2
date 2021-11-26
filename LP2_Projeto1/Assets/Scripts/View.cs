@@ -14,14 +14,14 @@ public class View : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        map = GameObject.Find("Map").GetComponent<Map>();
+
         int collumns = map.Cols;
         int rows = map.Rows;
+        Debug.Log(rows + " " + collumns);
 
         SetGridLayout(rows, collumns);
         BuildViewMap(rows, collumns);
-        
-
-        Destroy(tile);
     }
 
     private void SetGridLayout(int lines, int collumns)
@@ -39,15 +39,15 @@ public class View : MonoBehaviour
             for(int y = 0; y < collumns; y++)
             {
                 GameObject newTileGameObject = Instantiate(tile, transform);
-                newTileGameObject.transform.parent = tile.transform.parent;
+                
+                Debug.Log(newTileGameObject.name);
+                newTileGameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = map.GetTile(i,y).GoldProduced.ToString();
+                newTileGameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = map.GetTile(i,y).FoodProduced.ToString();
 
                 //PASSAR A INFORMAÇÃO AO NOVO GAMEOBCT DO TILE DO MAPA
-                Tile newTile = newTileGameObject.GetComponent<Tile>();
-                newTile = new Tile(map.GetTile(i,y).Terrain.ToString().ToLower(),  map.GetTile(i,y).Resources);
+               // Tile newTile = newTileGameObject.GetComponent<Tile>();
+               // newTile = new Tile(map.GetTile(i,y).Terrain.ToString().ToLower(),  map.GetTile(i,y).Resources);
                 ///////////////////////////////////////////////////////////////
-                
-                newTileGameObject.transform.GetChild(0).GetComponent<TextMeshPro>().text = newTile.GoldProduced.ToString();
-                newTileGameObject.transform.GetChild(1).GetComponent<TextMeshPro>().text = newTile.FoodProduced.ToString();
             }
         }
     }

@@ -25,4 +25,10 @@ public class Map : MonoBehaviour
     {
         return _tiles[row, col];
     }
+
+    public void SetSize((int cols, int lines) mapSize)
+    {
+        _mapSize = mapSize;
+        _tiles = new Tile[Rows, Cols];
+    }
 }
