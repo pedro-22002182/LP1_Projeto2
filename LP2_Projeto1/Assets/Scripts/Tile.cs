@@ -19,6 +19,18 @@ public class Tile : MonoBehaviour
     private int _baseFoodValue;
 
     public TerrainType Terrain { get => _terrainType; }
+    public ICollection<Resource> Resources
+    {
+        get
+        {
+            ICollection<Resource> aux = new List<Resource>();
+
+            foreach (Resource r in _resources)
+                aux.Add(r);
+            
+            return aux;
+        }
+    }
     
     public int GoldProduced
     {

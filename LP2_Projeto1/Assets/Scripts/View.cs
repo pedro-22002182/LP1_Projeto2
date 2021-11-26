@@ -43,7 +43,7 @@ public class View : MonoBehaviour
 
                 //PASSAR A INFORMAÇÃO AO NOVO GAMEOBCT DO TILE DO MAPA
                 Tile newTile = newTileGameObject.GetComponent<Tile>();
-                newTile = new Tile(map.GetTile(i,y).Terrain,  map.GetTile(i,y).resources);
+                newTile = new Tile(map.GetTile(i,y).Terrain.ToString().ToLower(),  map.GetTile(i,y).Resources);
                 ///////////////////////////////////////////////////////////////
                 
                 newTileGameObject.transform.GetChild(0).GetComponent<TextMeshPro>().text = newTile.GoldProduced.ToString();
