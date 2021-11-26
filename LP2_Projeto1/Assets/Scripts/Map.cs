@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class Map : MonoBehaviour
 {
-    private Tile[,] tiles;
-    public int NLines {get;}
-    public int NColumns {get;}
+    public int Rows { get => _mapSize.rows; }
+    public int Cols { get => _mapSize.cols; }
 
-    public Map(int lines, int columns)
+    private (int rows, int cols) _mapSize;
+    private Tile[,] _tiles;
+
+    public Map((int cols, int lines) mapSize)
     {
-        NLines = lines;
-        NColumns = columns;
-
-        tiles = new Tile[NLines, NColumns];
+        _mapSize = mapSize;
+        _tiles = new Tile[Rows, Cols];
     }
 
-    public void SetBuildMap(Tile tile, int line, int collumn)
+    public void SetTile(int row, int col, Tile tile)
     {
-        tiles[line, collumn] = tile;
+        _tiles[row, col] = tile; 
     }
 
-    public Tile GetTile(int line, int collumn)
+    public Tile GetTile(int row, int col)
     {
-        return tiles[line, collumn];
+        return _tiles[row, col];
     }
 }

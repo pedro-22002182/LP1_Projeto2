@@ -3,24 +3,50 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    public ICollection<IResource> resources;
-    private int baseGoldValue;
-    private int baseFoodValue;
+    private static readonly IDictionary<string, TerrainType> terrainDict = 
+            new Dictionary<string, TerrainType>()
+        {
+            {"desert", TerrainType.Desert},
+            {"grassland", TerrainType.Grassland},
+            {"hills", TerrainType.Hills},
+            {"mountain", TerrainType.Mountain},
+            {"ocean", TerrainType.Ocean}
+        };
 
-    public TerrainType Terrain { get; }
+    private ICollection<Resource> _resources;
+    private readonly TerrainType _terrainType;
+    private int _baseGoldValue;
+    private int _baseFoodValue;
+
+    public TerrainType Terrain { get => _terrainType; }
+    public ICollection<Resource> Resources
+    {
+        get
+        {
+            ICollection<Resource> aux = new List<Resource>();
+
+            foreach (Resource r in _resources)
+                aux.Add(r);
+            
+            return aux;
+        }
+    }
     
     public int GoldProduced
     {
         get
         {
-            int goldProduction = baseGoldValue;
+            int goldProduction = _baseGoldValue;
 
-            foreach (IResource r in resources)
-            {
-                goldProduction =+ r.GoldValue;
-            }
+                if (_resources.Count > 0)
+                {
+                    foreach (Resource r in _resources)
+                    {
+                        goldProduction += r.GoldValue;
+                    }
+                }
 
-            return goldProduction;
+                return goldProduction;
         }
     }
 
@@ -28,22 +54,26 @@ public class Tile : MonoBehaviour
     {
         get
         {
-           int foodProduction = baseFoodValue;
+           int foodProduction = _baseFoodValue;
 
-            foreach (IResource r in resources)
-            {
-                foodProduction =+ r.FoodValue;
-            }
+                if (_resources.Count > 0)
+                {
+                    foreach (Resource r in _resources)
+                    {
+                        foodProduction += r.FoodValue;
+                    }
+                }
 
-            return foodProduction; 
+                return foodProduction;
         }
     }
 
-    public Tile(TerrainType terrain, ICollection<IResource> resources)
+    public Tile(string terrain, ICollection<Resource> resources)
     {
-        Terrain = terrain;
-        this.resources = resources;
+        terrainDict.TryGetValue(terrain, out _terrainType);
         DefineBaseValues();
+        _resources = new List<Resource>();
+        DefineResources(resources);
     }
 
     private void DefineBaseValues()
@@ -51,29 +81,35 @@ public class Tile : MonoBehaviour
         switch (Terrain)
         {
             case TerrainType.Desert:
-                baseGoldValue = 0;
-                baseFoodValue = 0;
+                _baseGoldValue = 0;
+                _baseFoodValue = 0;
                 break;
             
             case TerrainType.Grassland:
-                baseGoldValue = 0;
-                baseFoodValue = 2;
+                _baseGoldValue = 0;
+                _baseFoodValue = 2;
                 break;
             
             case TerrainType.Hills:
-                baseGoldValue = 1;
-                baseFoodValue = 1;
+                _baseGoldValue = 1;
+                _baseFoodValue = 1;
                 break;
             
             case TerrainType.Mountain:
-                baseGoldValue = 1;
-                baseFoodValue = 0;
+                _baseGoldValue = 1;
+                _baseFoodValue = 0;
                 break;
 
             case TerrainType.Ocean:
-                baseGoldValue = 0;
-                baseFoodValue = 1;
+                _baseGoldValue = 0;
+                _baseFoodValue = 1;
                 break;
         }
+    }
+
+    public void DefineResources(ICollection<Resource> resources)
+    {
+        foreach (Resource r in resources)
+            _resources.Add(r);
     }
 }

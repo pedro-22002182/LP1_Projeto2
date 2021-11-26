@@ -14,11 +14,11 @@ public class View : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        int collumns = map.NColumns;
-        int lines = map.NLines;
+        int collumns = map.Cols;
+        int rows = map.Rows;
 
-        SetGridLayout(lines, collumns);
-        BuildViewMap(lines, collumns);
+        SetGridLayout(rows, collumns);
+        BuildViewMap(rows, collumns);
         
 
         Destroy(tile);
@@ -43,7 +43,7 @@ public class View : MonoBehaviour
 
                 //PASSAR A INFORMAÇÃO AO NOVO GAMEOBCT DO TILE DO MAPA
                 Tile newTile = newTileGameObject.GetComponent<Tile>();
-                newTile = new Tile(map.GetTile(i,y).Terrain,  map.GetTile(i,y).resources);
+                newTile = new Tile(map.GetTile(i,y).Terrain.ToString().ToLower(),  map.GetTile(i,y).Resources);
                 ///////////////////////////////////////////////////////////////
                 
                 newTileGameObject.transform.GetChild(0).GetComponent<TextMeshPro>().text = newTile.GoldProduced.ToString();
