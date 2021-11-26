@@ -85,31 +85,31 @@ public class Tile : MonoBehaviour
             case TerrainType.Desert:
                 _baseGoldValue = 0;
                 _baseFoodValue = 0;
-                color = Color.yellow;
+                color = new Color(0.988f, 0.949f, 0.572f);
                 break;
             
             case TerrainType.Grassland:
                 _baseGoldValue = 0;
                 _baseFoodValue = 2;
-                color = Color.green;
+                color = new Color(0.572f, 0.988f, 0.662f);
                 break;
             
             case TerrainType.Hills:
                 _baseGoldValue = 1;
                 _baseFoodValue = 1;
-                color = Color.gray;
+                color = new Color(0.760f, 0.756f, 0.741f);
                 break;
             
             case TerrainType.Mountain:
                 _baseGoldValue = 1;
                 _baseFoodValue = 0;
-                color = Color.black;
+                color = new Color(0.6f, 0.474f, 0.301f);
                 break;
 
             case TerrainType.Ocean:
                 _baseGoldValue = 0;
                 _baseFoodValue = 1;
-                color = Color.blue;
+                color = new Color(0.6f, 0.772f, 0.960f);
                 break;
         }
     }
