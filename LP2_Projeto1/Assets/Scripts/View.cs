@@ -53,31 +53,24 @@ public class View : MonoBehaviour
                 for(int r = 0; r < newTile.Resources.Count; r++)
                 {
                     GameObject newResource = Instantiate(resource, newTileGameObject.transform.GetChild(0));
-                    //newResource.GetComponent<Image>().color = newTile.Resources[r].color;
+                    newResource.GetComponent<Image>().color = newTile.Resources[r].color;
                 }
                 
                 Destroy(gridResources.gameObject.transform.GetChild(0).gameObject);
-                
-                //newTileGameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = map.GetTile(i,y).GoldProduced.ToString();
-                //newTileGameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = map.GetTile(i,y).FoodProduced.ToString();
-
-                //PASSAR A INFORMAÇÃO AO NOVO GAMEOBCT DO TILE DO MAPA
-               // Tile newTile = newTileGameObject.GetComponent<Tile>();
-               // newTile = new Tile(map.GetTile(i,y).Terrain.ToString().ToLower(),  map.GetTile(i,y).Resources);
-                ///////////////////////////////////////////////////////////////
             }
         }
     }
 
+    //MUDAR PARA SER AUTOMATICO
     private void SetGridResources(GridLayoutGroup grid ,int num)
     {
         if(num == 0)
             return;
-
+ 
         grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-        grid.constraintCount = Mathf.RoundToInt(num/2);
+        grid.constraintCount = 6;
 
-        grid.cellSize = new Vector2(160 / Mathf.Round(num/2), 160 / Mathf.Round(num/2));
+        grid.cellSize = new Vector2(160 / 6, 160 / 6);
     }
 
     //Ativar Detalhes Tile
