@@ -14,7 +14,7 @@ public class Tile : MonoBehaviour
         };
 
     private ICollection<Resource> _resources;
-    private readonly TerrainType _terrainType;
+    private TerrainType _terrainType;
     private int _baseGoldValue;
     private int _baseFoodValue;
 
@@ -71,6 +71,14 @@ public class Tile : MonoBehaviour
     }
 
     public Tile(string terrain, ICollection<Resource> resources)
+    {
+        terrainDict.TryGetValue(terrain, out _terrainType);
+        DefineBaseValues();
+        _resources = new List<Resource>();
+        DefineResources(resources);
+    }
+
+    public void ChangeTile(string terrain, ICollection<Resource> resources)
     {
         terrainDict.TryGetValue(terrain, out _terrainType);
         DefineBaseValues();

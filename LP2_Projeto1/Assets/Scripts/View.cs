@@ -45,10 +45,11 @@ public class View : MonoBehaviour
 
                 Tile newTile = map.GetTile(i,y);
 
+                newTileGameObject.GetComponent<Tile>().ChangeTile(newTile.Terrain.ToString().ToLower(), newTile.Resources);
                 newTileGameObject.GetComponent<Image>().color = newTile.color;
                 
                 GridLayoutGroup gridResources = newTileGameObject.transform.GetChild(0).GetComponent<GridLayoutGroup>();
-                SetGridResources(gridResources, newTile.Resources.Count);
+                SetGridResources(gridResources, newTile.Resources.Count, 160);
 
                 for(int r = 0; r < newTile.Resources.Count; r++)
                 {
@@ -56,13 +57,12 @@ public class View : MonoBehaviour
                     newResource.GetComponent<Image>().color = newTile.Resources[r].color;
                 }
                 
-                Destroy(gridResources.gameObject.transform.GetChild(0).gameObject);
             }
         }
     }
 
     //MUDAR PARA SER AUTOMATICO
-    private void SetGridResources(GridLayoutGroup grid ,int num)
+    private void SetGridResources(GridLayoutGroup grid ,int num, int size)
     {
         if(num == 0)
             return;
@@ -70,19 +70,44 @@ public class View : MonoBehaviour
         grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         grid.constraintCount = 6;
 
-        grid.cellSize = new Vector2(160 / 6, 160 / 6);
+        grid.cellSize = new Vector2(size / 6, size / 6);
     }
 
     //Ativar Detalhes Tile
     public void OpenTile(Tile tile)
     {
+        DestroyChildren(detailTile.transform.GetChild(4));
         detailTile.SetActive(true);
 
-        detailTile.transform.GetChild(0).GetComponent<TextMeshPro>().text = tile.GoldProduced.ToString();
-        detailTile.transform.GetChild(1).GetComponent<TextMeshPro>().text = tile.FoodProduced.ToString();
-        detailTile.transform.GetChild(2).GetComponent<TextMeshPro>().text = tile.Terrain.ToString();
+        detailTile.GetComponent<Image>().color = tile.color;
+        detailTile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = tile.GoldProduced.ToString();
+        detailTile.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = tile.FoodProduced.ToString();
+        detailTile.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = tile.Terrain.ToString();
         
-        //filho 4 é com os recurosos todos
+        string resources = "";
 
+        foreach(Resource r in tile.Resources)
+        {
+            resources += " " + r.Type;
+        }
+
+        detailTile.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = resources;
+        
+        GridLayoutGroup gridResources = detailTile.transform.GetChild(4).GetComponent<GridLayoutGroup>();
+        SetGridResources(gridResources, tile.Resources.Count, 400);
+
+        for(int r = 0; r < tile.Resources.Count; r++)
+        {
+            GameObject newResource = Instantiate(resource, detailTile.transform.GetChild(4));
+            newResource.GetComponent<Image>().color = tile.Resources[r].color;
+        }
+    }
+
+    public void DestroyChildren(Transform t)
+    {
+        for(int i = t.GetChildCount() - 1 ; i >= 0; i--)
+        {
+            Destroy(t.GetChild(i).gameObject);
+        }
     }
 }
