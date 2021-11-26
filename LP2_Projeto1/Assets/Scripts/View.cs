@@ -22,6 +22,8 @@ public class View : MonoBehaviour
 
         SetGridLayout(rows, collumns);
         BuildViewMap(rows, collumns);
+
+        Destroy(tile.gameObject);
     }
 
     private void SetGridLayout(int lines, int collumns)
@@ -29,7 +31,8 @@ public class View : MonoBehaviour
         gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         gridLayout.constraintCount = collumns;
 
-        gridLayout.cellSize = new Vector2(800 / collumns, 600 / lines);
+        gridLayout.cellSize = new Vector2(1600 / collumns, 900 / lines);
+        Debug.Log(lines + " " + collumns);
     }
 
     private void BuildViewMap(int lines, int collumns)
