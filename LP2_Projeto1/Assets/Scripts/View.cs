@@ -44,6 +44,7 @@ public class View : MonoBehaviour
                 GameObject newTileGameObject = Instantiate(tile, transform);
                 
                 Debug.Log(newTileGameObject.name);
+                newTileGameObject.GetComponent<Image>().color = map.GetTile(i,y).color;
                 newTileGameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = map.GetTile(i,y).GoldProduced.ToString();
                 newTileGameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = map.GetTile(i,y).FoodProduced.ToString();
 

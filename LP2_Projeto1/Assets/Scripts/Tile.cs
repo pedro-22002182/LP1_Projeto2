@@ -18,6 +18,8 @@ public class Tile : MonoBehaviour
     private int _baseGoldValue;
     private int _baseFoodValue;
 
+    public Color color;
+
     public TerrainType Terrain { get => _terrainType; }
     public ICollection<Resource> Resources
     {
@@ -83,26 +85,31 @@ public class Tile : MonoBehaviour
             case TerrainType.Desert:
                 _baseGoldValue = 0;
                 _baseFoodValue = 0;
+                color = Color.yellow;
                 break;
             
             case TerrainType.Grassland:
                 _baseGoldValue = 0;
                 _baseFoodValue = 2;
+                color = Color.green;
                 break;
             
             case TerrainType.Hills:
                 _baseGoldValue = 1;
                 _baseFoodValue = 1;
+                color = Color.gray;
                 break;
             
             case TerrainType.Mountain:
                 _baseGoldValue = 1;
                 _baseFoodValue = 0;
+                color = Color.black;
                 break;
 
             case TerrainType.Ocean:
                 _baseGoldValue = 0;
                 _baseFoodValue = 1;
+                color = Color.blue;
                 break;
         }
     }
