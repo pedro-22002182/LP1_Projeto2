@@ -40,9 +40,14 @@ public class View : MonoBehaviour
             {
                 GameObject newTileGameObject = Instantiate(tile, transform);
                 newTileGameObject.transform.parent = tile.transform.parent;
+
+                //PASSAR A INFORMAÇÃO AO NOVO GAMEOBCT DO TILE DO MAPA
+                Tile newTile = newTileGameObject.GetComponent<Tile>();
+                newTile = new Tile(map.GetTile(i,y).Terrain,  map.GetTile(i,y).resources);
+                ///////////////////////////////////////////////////////////////
                 
-                newTileGameObject.transform.GetChild(0).GetComponent<TextMeshPro>().text = map.GetTile(i,y).GoldProduced.ToString();
-                newTileGameObject.transform.GetChild(1).GetComponent<TextMeshPro>().text = map.GetTile(i,y).FoodProduced.ToString();
+                newTileGameObject.transform.GetChild(0).GetComponent<TextMeshPro>().text = newTile.GoldProduced.ToString();
+                newTileGameObject.transform.GetChild(1).GetComponent<TextMeshPro>().text = newTile.FoodProduced.ToString();
             }
         }
     }

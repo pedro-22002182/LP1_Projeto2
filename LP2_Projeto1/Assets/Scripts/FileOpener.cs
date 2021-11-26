@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using SimpleFileBrowser;
+using UnityEngine.SceneManagement;
 
 public class FileOpener : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        FileBrowser.SetFilters(true, new FileBrowser.Filter("Maps", ".map4x"));
+        FileBrowser.SetFilters(false, new FileBrowser.Filter("Maps", ".map4x"));
         FileBrowser.SetDefaultFilter(".map4x");
         FileBrowser.SetExcludedExtensions(".lnk", ".tmp", ".zip", ".rar", ".exe");
         FileBrowser.AddQuickLink("Users", "C:\\Users", null);
@@ -19,7 +20,7 @@ public class FileOpener : MonoBehaviour
 
     IEnumerator ShowLoadDialogCoroutine()
     {
-        yield return FileBrowser.WaitForLoadDialog(FileBrowser.PickMode.FilesAndFolders, true, null, null, "Load Files and Folders", "Load");
+        yield return FileBrowser.WaitForLoadDialog(FileBrowser.PickMode.Files, false, null, null, "Select a file", "Select");
         Debug.Log( FileBrowser.Success );
 
         if( FileBrowser.Success )
@@ -33,6 +34,8 @@ public class FileOpener : MonoBehaviour
 			// Or, copy the first file to persistentDataPath
 			string destinationPath = Path.Combine( Application.persistentDataPath, FileBrowserHelpers.GetFilename( FileBrowser.Result[0] ) );
 			FileBrowserHelpers.CopyFile( FileBrowser.Result[0], destinationPath );
+        
 		}
+        
     }
 }
