@@ -3,11 +3,22 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    private ICollection<IResource> resources;
+    private static readonly IDictionary<string, TerrainType> terrainDict = 
+            new Dictionary<string, TerrainType>()
+        {
+            {"desert", TerrainType.Desert},
+            {"grassland", TerrainType.Grassland},
+            {"hills", TerrainType.Hills},
+            {"mountain", TerrainType.Mountain},
+            {"ocean", TerrainType.Ocean}
+        };
+
+    private ICollection<Resource> _resources;
+    private readonly TerrainType _terrainType;
     private int baseGoldValue;
     private int baseFoodValue;
 
-    public TerrainType Terrain { get; }
+    public TerrainType Terrain { get => _terrainType; }
     
     public int GoldProduced
     {
@@ -15,12 +26,15 @@ public class Tile : MonoBehaviour
         {
             int goldProduction = baseGoldValue;
 
-            foreach (IResource r in resources)
-            {
-                goldProduction =+ r.GoldValue;
-            }
+                if (_resources.Count > 0)
+                {
+                    foreach (Resource r in _resources)
+                    {
+                        goldProduction += r.GoldValue;
+                    }
+                }
 
-            return goldProduction;
+                return goldProduction;
         }
     }
 
@@ -30,20 +44,24 @@ public class Tile : MonoBehaviour
         {
            int foodProduction = baseFoodValue;
 
-            foreach (IResource r in resources)
-            {
-                foodProduction =+ r.FoodValue;
-            }
+                if (_resources.Count > 0)
+                {
+                    foreach (Resource r in _resources)
+                    {
+                        foodProduction += r.FoodValue;
+                    }
+                }
 
-            return foodProduction; 
+                return foodProduction;
         }
     }
 
-    public Tile(TerrainType terrain, ICollection<IResource> resources)
+    public Tile(string terrain, ICollection<Resource> resources)
     {
-        Terrain = terrain;
-        this.resources = resources;
+        terrainDict.TryGetValue(terrain, out _terrainType);
         DefineBaseValues();
+        _resources = new List<Resource>();
+        DefineResources(resources);
     }
 
     private void DefineBaseValues()
@@ -75,5 +93,11 @@ public class Tile : MonoBehaviour
                 baseFoodValue = 1;
                 break;
         }
+    }
+
+    public void DefineResources(ICollection<Resource> resources)
+    {
+        foreach (Resource r in resources)
+            _resources.Add(r);
     }
 }
