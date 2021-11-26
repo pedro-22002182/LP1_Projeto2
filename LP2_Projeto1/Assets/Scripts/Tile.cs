@@ -15,8 +15,8 @@ public class Tile : MonoBehaviour
 
     private ICollection<Resource> _resources;
     private readonly TerrainType _terrainType;
-    private int baseGoldValue;
-    private int baseFoodValue;
+    private int _baseGoldValue;
+    private int _baseFoodValue;
 
     public TerrainType Terrain { get => _terrainType; }
     
@@ -24,7 +24,7 @@ public class Tile : MonoBehaviour
     {
         get
         {
-            int goldProduction = baseGoldValue;
+            int goldProduction = _baseGoldValue;
 
                 if (_resources.Count > 0)
                 {
@@ -42,7 +42,7 @@ public class Tile : MonoBehaviour
     {
         get
         {
-           int foodProduction = baseFoodValue;
+           int foodProduction = _baseFoodValue;
 
                 if (_resources.Count > 0)
                 {
@@ -69,28 +69,28 @@ public class Tile : MonoBehaviour
         switch (Terrain)
         {
             case TerrainType.Desert:
-                baseGoldValue = 0;
-                baseFoodValue = 0;
+                _baseGoldValue = 0;
+                _baseFoodValue = 0;
                 break;
             
             case TerrainType.Grassland:
-                baseGoldValue = 0;
-                baseFoodValue = 2;
+                _baseGoldValue = 0;
+                _baseFoodValue = 2;
                 break;
             
             case TerrainType.Hills:
-                baseGoldValue = 1;
-                baseFoodValue = 1;
+                _baseGoldValue = 1;
+                _baseFoodValue = 1;
                 break;
             
             case TerrainType.Mountain:
-                baseGoldValue = 1;
-                baseFoodValue = 0;
+                _baseGoldValue = 1;
+                _baseFoodValue = 0;
                 break;
 
             case TerrainType.Ocean:
-                baseGoldValue = 0;
-                baseFoodValue = 1;
+                _baseGoldValue = 0;
+                _baseFoodValue = 1;
                 break;
         }
     }
