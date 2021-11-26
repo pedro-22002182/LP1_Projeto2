@@ -21,11 +21,11 @@ public class Tile : MonoBehaviour
     public Color color;
 
     public TerrainType Terrain { get => _terrainType; }
-    public ICollection<Resource> Resources
+    public List<Resource> Resources
     {
         get
         {
-            ICollection<Resource> aux = new List<Resource>();
+            List<Resource> aux = new List<Resource>();
 
             foreach (Resource r in _resources)
                 aux.Add(r);
