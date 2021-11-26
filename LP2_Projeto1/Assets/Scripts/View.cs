@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -46,7 +44,7 @@ public class View : MonoBehaviour
                 Tile newTile = map.GetTile(i,y);
 
                 newTileGameObject.GetComponent<Tile>().ChangeTile(newTile.Terrain.ToString().ToLower(), newTile.Resources);
-                newTileGameObject.GetComponent<Image>().color = newTile.color;
+                newTileGameObject.GetComponent<Image>().color = newTile.Color;
                 
                 GridLayoutGroup gridResources = newTileGameObject.transform.GetChild(0).GetComponent<GridLayoutGroup>();
                 SetGridResources(gridResources, newTile.Resources.Count, 160);
@@ -54,7 +52,7 @@ public class View : MonoBehaviour
                 for(int r = 0; r < newTile.Resources.Count; r++)
                 {
                     GameObject newResource = Instantiate(resource, newTileGameObject.transform.GetChild(0));
-                    newResource.GetComponent<Image>().color = newTile.Resources[r].color;
+                    newResource.GetComponent<Image>().color = newTile.Resources[r].Color;
                 }
                 
             }
@@ -79,7 +77,7 @@ public class View : MonoBehaviour
         DestroyChildren(detailTile.transform.GetChild(4));
         detailTile.SetActive(true);
 
-        detailTile.GetComponent<Image>().color = tile.color;
+        detailTile.GetComponent<Image>().color = tile.Color;
         detailTile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = tile.GoldProduced.ToString();
         detailTile.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = tile.FoodProduced.ToString();
         detailTile.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = tile.Terrain.ToString();
@@ -99,7 +97,7 @@ public class View : MonoBehaviour
         for(int r = 0; r < tile.Resources.Count; r++)
         {
             GameObject newResource = Instantiate(resource, detailTile.transform.GetChild(4));
-            newResource.GetComponent<Image>().color = tile.Resources[r].color;
+            newResource.GetComponent<Image>().color = tile.Resources[r].Color;
         }
     }
 
