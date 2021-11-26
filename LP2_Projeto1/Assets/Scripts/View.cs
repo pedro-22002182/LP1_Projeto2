@@ -6,8 +6,8 @@ using TMPro;
 
 public class View : MonoBehaviour
 {
-    [SerializeField] private GameObject tile, detailTile;
-    [SerializeField] private GridLayoutGroup gridLayout;
+    [SerializeField] private GameObject tile, detailTile, resource;
+    [SerializeField] private GridLayoutGroup gridTiles;
 
     private Map map;
 
@@ -18,21 +18,19 @@ public class View : MonoBehaviour
 
         int collumns = map.Cols;
         int rows = map.Rows;
-        Debug.Log(rows + " " + collumns);
 
-        SetGridLayout(rows, collumns);
+        SetGridTiles(rows, collumns);
         BuildViewMap(rows, collumns);
 
         Destroy(tile.gameObject);
     }
 
-    private void SetGridLayout(int lines, int collumns)
+    private void SetGridTiles(int lines, int collumns)
     {
-        gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-        gridLayout.constraintCount = collumns;
+        gridTiles.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+        gridTiles.constraintCount = collumns;
 
-        gridLayout.cellSize = new Vector2(1600 / collumns, 900 / lines);
-        Debug.Log(lines + " " + collumns);
+        gridTiles.cellSize = new Vector2(1600 / collumns, 900 / lines);
     }
 
     private void BuildViewMap(int lines, int collumns)
@@ -44,9 +42,24 @@ public class View : MonoBehaviour
                 GameObject newTileGameObject = Instantiate(tile, transform);
                 
                 Debug.Log(newTileGameObject.name);
-                newTileGameObject.GetComponent<Image>().color = map.GetTile(i,y).color;
-                newTileGameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = map.GetTile(i,y).GoldProduced.ToString();
-                newTileGameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = map.GetTile(i,y).FoodProduced.ToString();
+
+                Tile newTile = map.GetTile(i,y);
+
+                newTileGameObject.GetComponent<Image>().color = newTile.color;
+                
+                GridLayoutGroup gridResources = newTileGameObject.transform.GetChild(0).GetComponent<GridLayoutGroup>();
+                SetGridResources(gridResources, newTile.Resources.Count);
+
+                for(int r = 0; r < newTile.Resources.Count; r++)
+                {
+                    GameObject newResource = Instantiate(resource, newTileGameObject.transform.GetChild(0));
+                    //newResource.GetComponent<Image>().color = newTile.Resources[r].color;
+                }
+                
+                Destroy(gridResources.gameObject.transform.GetChild(0).gameObject);
+                
+                //newTileGameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = map.GetTile(i,y).GoldProduced.ToString();
+                //newTileGameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = map.GetTile(i,y).FoodProduced.ToString();
 
                 //PASSAR A INFORMAÇÃO AO NOVO GAMEOBCT DO TILE DO MAPA
                // Tile newTile = newTileGameObject.GetComponent<Tile>();
@@ -54,6 +67,17 @@ public class View : MonoBehaviour
                 ///////////////////////////////////////////////////////////////
             }
         }
+    }
+
+    private void SetGridResources(GridLayoutGroup grid ,int num)
+    {
+        if(num == 0)
+            return;
+
+        grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+        grid.constraintCount = Mathf.RoundToInt(num/2);
+
+        grid.cellSize = new Vector2(160 / Mathf.Round(num/2), 160 / Mathf.Round(num/2));
     }
 
     //Ativar Detalhes Tile
