@@ -1,13 +1,29 @@
+using System.Collections.Generic;
+
 public class Resource : IResource
 {
-    public ResourceType Type { get; set; }
-    public int GoldValue{get; set;}
-    public int FoodValue{get; set;}
-
-    public Resource(ResourceType type)
+    private static readonly IDictionary<string, ResourceType> resourceDict = 
+        new Dictionary<string, ResourceType>()
     {
-        Type = type;
-        DefineValues();  
+        {"plants", ResourceType.Plants},
+        {"animals", ResourceType.Animals},
+        {"metals", ResourceType.Metals},
+        {"fossilfuel", ResourceType.FossilFuel},
+        {"luxury", ResourceType.Luxury},
+        {"pollution", ResourceType.Pollution}
+    };
+
+    private readonly ResourceType _type;
+    private int _goldValue;
+    private int _foodValue;
+    public ResourceType Type { get => _type; }
+    public int GoldValue{ get => _goldValue; }
+    public int FoodValue{ get => _foodValue; }
+
+    public Resource(string type)
+    {
+        resourceDict.TryGetValue(type, out _type);
+        DefineValues();
     }
 
     private void DefineValues()
@@ -15,33 +31,33 @@ public class Resource : IResource
         switch (Type)
         {
             case ResourceType.Plants:
-                GoldValue = 1;
-                FoodValue = 2;
-                break;
-            
+                    _goldValue = 1;
+                    _foodValue = 2;
+                    break;
+                
             case ResourceType.Animals:
-                GoldValue = 2;
-                FoodValue = 3;
+                _goldValue = 2;
+                _foodValue = 3;
                 break;
             
             case ResourceType.Metals:
-                GoldValue = 3;
-                FoodValue = -1;
+                _goldValue = 3;
+                _foodValue = -1;
                 break;
             
             case ResourceType.FossilFuel:
-                GoldValue = 4;
-                FoodValue = -2;
+                _goldValue = 4;
+                _foodValue = -2;
                 break;
             
             case ResourceType.Luxury:
-                GoldValue = 4;
-                FoodValue = 0;
+                _goldValue = 4;
+                _foodValue = 0;
                 break;
             
             case ResourceType.Pollution:
-                GoldValue = -2;
-                FoodValue = -3;
+                _goldValue = -2;
+                _foodValue = -3;
                 break;
         }
     }
