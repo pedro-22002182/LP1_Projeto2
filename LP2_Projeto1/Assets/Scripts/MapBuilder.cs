@@ -49,7 +49,7 @@ public class MapBuilder : MonoBehaviour
             */
 
             BuildMap();
-            SceneManager.LoadScene("jogo");
+            SceneManager.LoadScene("Jogo");
 		}
     }
 
