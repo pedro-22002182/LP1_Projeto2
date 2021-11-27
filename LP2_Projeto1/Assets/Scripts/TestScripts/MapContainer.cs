@@ -1,18 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class MapContainer : MonoBehaviour
+[CreateAssetMenu(menuName = "MapContainer")]
+public class MapContainer : ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public TestMap Map { get; private set; }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        Map = new TestMap();
     }
 }
