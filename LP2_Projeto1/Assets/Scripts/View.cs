@@ -12,10 +12,13 @@ public class View : MonoBehaviour
     // Instance variables  //
     // /////////////////////
 
-    /// <summary>GameObjects that represent a exemple for instantiate and build the visual.</summary>
+    /// <summary>
+    /// GameObjects that represent an example to instantiate and build the
+    /// visual.
+    /// </summary>
     [SerializeField] private GameObject _tile, _detailTile, _resource;
 
-    /// <summary>Responsible for showing tiles in a organization grid.</summary>
+    /// <summary>Responsible for showing tiles in an organization grid.</summary>
     [SerializeField] private GridLayoutGroup _gridTiles;
 
     private Map _map;
@@ -43,7 +46,10 @@ public class View : MonoBehaviour
                 GameObject newTileGameObject = Instantiate(_tile, transform);
 
                 Tile newTile = _map.GetTile(i,y);
-                newTileGameObject.GetComponent<Tile>().ChangeTile(newTile.Terrain.ToString().ToLower(), newTile.Resources);
+
+                newTileGameObject.GetComponent<Tile>().ChangeTile(
+                    newTile.Terrain.ToString().ToLower(), newTile.Resources);
+
                 newTileGameObject.GetComponent<Image>().color = newTile.Color;
                 
                 DrawResources(newTileGameObject, newTile);
@@ -53,12 +59,17 @@ public class View : MonoBehaviour
 
     private void DrawResources(GameObject newTileGameObject, Tile newTile)
     {
-        GridLayoutGroup gridResources = newTileGameObject.transform.GetChild(0).GetComponent<GridLayoutGroup>();
-        SetGridResources(gridResources, newTile.Resources.Count, _gridTiles.cellSize.x, _gridTiles.cellSize.y);
+        GridLayoutGroup gridResources = newTileGameObject.transform.
+            GetChild(0).GetComponent<GridLayoutGroup>();
+
+        SetGridResources(gridResources, newTile.Resources.Count,
+            _gridTiles.cellSize.x, _gridTiles.cellSize.y);
 
         for(int r = 0; r < newTile.Resources.Count; r++)
         {
-            GameObject newResource = Instantiate(_resource, newTileGameObject.transform.GetChild(0));
+            GameObject newResource = Instantiate(_resource,
+                newTileGameObject.transform.GetChild(0));
+                
             newResource.GetComponent<Image>().color = newTile.Resources[r].Color;
         }
     }
@@ -70,9 +81,15 @@ public class View : MonoBehaviour
         _detailTile.SetActive(true);
 
         _detailTile.GetComponent<Image>().color = tile.Color;
-        _detailTile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = tile.GoldProduced.ToString();
-        _detailTile.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = tile.FoodProduced.ToString();
-        _detailTile.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = tile.Terrain.ToString();
+
+        _detailTile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text =
+            tile.GoldProduced.ToString();
+
+        _detailTile.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text =
+            tile.FoodProduced.ToString();
+
+        _detailTile.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text =
+            tile.Terrain.ToString();
         
         string resources = "";
 
@@ -81,14 +98,19 @@ public class View : MonoBehaviour
             resources += " " + r.Type;
         }
 
-        _detailTile.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = resources;
+        _detailTile.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text =
+            resources;
         
-        GridLayoutGroup gridResources = _detailTile.transform.GetChild(4).GetComponent<GridLayoutGroup>();
+        GridLayoutGroup gridResources =
+            _detailTile.transform.GetChild(4).GetComponent<GridLayoutGroup>();
+
         SetGridResources(gridResources, tile.Resources.Count, 400, 400);
 
         for(int r = 0; r < tile.Resources.Count; r++)
         {
-            GameObject newResource = Instantiate(_resource, _detailTile.transform.GetChild(4));
+            GameObject newResource =
+                Instantiate(_resource, _detailTile.transform.GetChild(4));
+
             newResource.GetComponent<Image>().color = tile.Resources[r].Color;
         }
     }
@@ -98,19 +120,24 @@ public class View : MonoBehaviour
         _gridTiles.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         _gridTiles.constraintCount = collumns;
 
-        Vector2 sizeScreen = transform.parent.GetComponent<RectTransform>().sizeDelta;
-        _gridTiles.cellSize = new Vector2(sizeScreen.x / collumns, sizeScreen.y / lines);
+        Vector2 sizeScreen =
+            transform.parent.GetComponent<RectTransform>().sizeDelta;
+
+        _gridTiles.cellSize = new Vector2(
+            sizeScreen.x / collumns, sizeScreen.y / lines);
     }
 
-    private void SetGridResources(GridLayoutGroup grid ,int num, float sizeX, float sizeY)
+    private void SetGridResources(GridLayoutGroup grid ,int resourceAmount,
+                                    float sizeX, float sizeY)
     {
-        if(num == 0)
+        if(resourceAmount == 0)
             return;
 
-        grid.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(sizeX/1.5f, sizeY/1.5f);
+        grid.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                sizeX/1.5f, sizeY/1.5f);
  
         grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-        grid.constraintCount = 6; //Mathf.RoundToInt(num/2) + 1;
+        grid.constraintCount = 6; // CHANGE THIS INTO RESOURCE COUNT, PROBABLY NEED TO CREATE A PROPERTY ON MAP CONTAINING THE AVAILABLE RESOURCES
 
         grid.cellSize = new Vector2((sizeX/1.5f) / 6, (sizeX/1.5f) / 6);
     }
