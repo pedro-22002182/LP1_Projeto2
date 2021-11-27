@@ -5,20 +5,30 @@ public class MenuController : MonoBehaviour
 {
     [SerializeField]
     private GameObject ButtonsContainer;
+
+    private GameObject MapContainer;
+
     private bool IsMenu;
+
+    private void Start()
+    {
+        MapContainer = GameObject.Find("Map");
+    }
+
     public void CloseGame()
     {
-#if UNITY_STANDALONE
-        Application.Quit();
-#endif
+        #if UNITY_STANDALONE
+                Application.Quit();
+        #endif
 
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#endif
+        #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+        #endif
     }
 
     public void OpenAnotherMapFile()
     {
+        Destroy(MapContainer);
         SceneManager.LoadScene("StartMenu");
     }
     void Update()

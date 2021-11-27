@@ -63,27 +63,6 @@ public class View : MonoBehaviour
         }
     }
 
-    private void SetGridTiles(int lines, int collumns)
-    {
-        _gridTiles.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-        _gridTiles.constraintCount = collumns;
-
-        _gridTiles.cellSize = new Vector2(1600 / collumns, 900 / lines);
-    }
-
-    private void SetGridResources(GridLayoutGroup grid ,int num, float sizeX, float sizeY)
-    {
-        if(num == 0)
-            return;
-
-        grid.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(sizeX/1.5f, sizeY/1.5f);
- 
-        grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-        grid.constraintCount = 6; //Mathf.RoundToInt(num/2) + 1;
-
-        grid.cellSize = new Vector2((sizeX/1.5f) / 6, (sizeX/1.5f) / 6);
-    }
-
     //Ativar Detalhes Tile
     public void OpenTile(Tile tile)
     {
@@ -112,6 +91,27 @@ public class View : MonoBehaviour
             GameObject newResource = Instantiate(_resource, _detailTile.transform.GetChild(4));
             newResource.GetComponent<Image>().color = tile.Resources[r].Color;
         }
+    }
+
+    private void SetGridTiles(int lines, int collumns)
+    {
+        _gridTiles.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+        _gridTiles.constraintCount = collumns;
+
+        _gridTiles.cellSize = new Vector2(1600 / collumns, 900 / lines);
+    }
+
+    private void SetGridResources(GridLayoutGroup grid ,int num, float sizeX, float sizeY)
+    {
+        if(num == 0)
+            return;
+
+        grid.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(sizeX/1.5f, sizeY/1.5f);
+ 
+        grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+        grid.constraintCount = 6; //Mathf.RoundToInt(num/2) + 1;
+
+        grid.cellSize = new Vector2((sizeX/1.5f) / 6, (sizeX/1.5f) / 6);
     }
 
     public void DestroyChildren(Transform t)
