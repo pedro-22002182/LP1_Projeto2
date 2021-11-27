@@ -2,9 +2,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+/// <summary>
+/// The <c>View</c> class.
+/// Class responsable for showing the data (map, tiles, resources) to the user.
+/// </summary>
 public class View : MonoBehaviour
 {
+    // ///////////////////////
+    // Instance variables  //
+    // /////////////////////
+
+    /// <summary>GameObjects that represent a exemple for instantiate and build the visual.</summary>
     [SerializeField] private GameObject tile, detailTile, resource;
+
+    /// <summary>Responsible for showing tiles in a organization grid.</summary>
     [SerializeField] private GridLayoutGroup gridTiles;
 
     private Map map;
@@ -23,14 +34,6 @@ public class View : MonoBehaviour
         Destroy(tile.gameObject);
     }
 
-    private void SetGridTiles(int lines, int collumns)
-    {
-        gridTiles.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-        gridTiles.constraintCount = collumns;
-
-        gridTiles.cellSize = new Vector2(1600 / collumns, 900 / lines);
-    }
-
     private void BuildViewMap(int lines, int collumns)
     {
         for(int i = 0; i < lines; i++)
@@ -47,7 +50,7 @@ public class View : MonoBehaviour
                 newTileGameObject.GetComponent<Image>().color = newTile.Color;
                 
                 GridLayoutGroup gridResources = newTileGameObject.transform.GetChild(0).GetComponent<GridLayoutGroup>();
-                SetGridResources(gridResources, newTile.Resources.Count, 160);
+                SetGridResources(gridResources, newTile.Resources.Count, gridTiles.cellSize.x, gridTiles.cellSize.y);
 
                 for(int r = 0; r < newTile.Resources.Count; r++)
                 {
@@ -59,16 +62,28 @@ public class View : MonoBehaviour
         }
     }
 
+
+    private void SetGridTiles(int lines, int collumns)
+    {
+        gridTiles.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+        gridTiles.constraintCount = collumns;
+
+        gridTiles.cellSize = new Vector2(1600 / collumns, 900 / lines);
+    }
+
+
     //MUDAR PARA SER AUTOMATICO
-    private void SetGridResources(GridLayoutGroup grid ,int num, int size)
+    private void SetGridResources(GridLayoutGroup grid ,int num, float sizeX, float sizeY)
     {
         if(num == 0)
             return;
+
+        grid.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(sizeX/1.5f, sizeY/1.5f);
  
         grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-        grid.constraintCount = 6;
+        grid.constraintCount = Mathf.RoundToInt(num/2) + 1;
 
-        grid.cellSize = new Vector2(size / 6, size / 6);
+        grid.cellSize = new Vector2(sizeY / 5, sizeY / 5);
     }
 
     //Ativar Detalhes Tile
@@ -92,7 +107,7 @@ public class View : MonoBehaviour
         detailTile.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = resources;
         
         GridLayoutGroup gridResources = detailTile.transform.GetChild(4).GetComponent<GridLayoutGroup>();
-        SetGridResources(gridResources, tile.Resources.Count, 400);
+        SetGridResources(gridResources, tile.Resources.Count, 400, 400);
 
         for(int r = 0; r < tile.Resources.Count; r++)
         {
