@@ -19,7 +19,7 @@ public class MapBuilder : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    public void ChooseFile()
     {
         FileBrowser.SetFilters(false, new FileBrowser.Filter("Maps", ".map4x"));
         FileBrowser.SetDefaultFilter(".map4x");
@@ -39,10 +39,6 @@ public class MapBuilder : MonoBehaviour
             BuildMap();
             SceneManager.LoadScene("Jogo");
 		}
-        else
-        {
-            // LIDAR COM O FACTO DE NAO SE ER ESCOLHIDO UM FICHEIRO
-        }
     }
 
     private void BuildMap()
