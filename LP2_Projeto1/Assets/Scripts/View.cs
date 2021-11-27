@@ -41,18 +41,30 @@ public class View : MonoBehaviour
                 
                 Debug.Log(newTileGameObject.name);
 
-                Tile newTile = map.GetTile(i,y);
+                //Tile newTile = map.GetTile(i,y);
 
-                newTileGameObject.GetComponent<Tile>().ChangeTile(newTile.Terrain.ToString().ToLower(), newTile.Resources);
-                newTileGameObject.GetComponent<Image>().color = newTile.Color;
+                // newTileGameObject.GetComponent<Tile>().ChangeTile(newTile.Terrain.ToString().ToLower(), newTile.Resources);
+                // newTileGameObject.GetComponent<Image>().color = newTile.Color;
+                
+                // GridLayoutGroup gridResources = newTileGameObject.transform.GetChild(0).GetComponent<GridLayoutGroup>();
+                // SetGridResources(gridResources, newTile.Resources.Count, 160);
+
+                // for(int r = 0; r < newTile.Resources.Count; r++)
+                // {
+                //     GameObject newResource = Instantiate(resource, newTileGameObject.transform.GetChild(0));
+                //     newResource.GetComponent<Image>().color = newTile.Resources[r].Color;
+                // }
+
+                newTileGameObject.GetComponent<Tile>().ChangeTile(map.GetTile(i,y).Terrain.ToString().ToLower(), map.GetTile(i,y).Resources);
+                newTileGameObject.GetComponent<Image>().color = map.GetTile(i,y).Color;
                 
                 GridLayoutGroup gridResources = newTileGameObject.transform.GetChild(0).GetComponent<GridLayoutGroup>();
-                SetGridResources(gridResources, newTile.Resources.Count, 160);
+                SetGridResources(gridResources, map.GetTile(i,y).Resources.Count, 160);
 
-                for(int r = 0; r < newTile.Resources.Count; r++)
+                for(int r = 0; r < map.GetTile(i,y).Resources.Count; r++)
                 {
                     GameObject newResource = Instantiate(resource, newTileGameObject.transform.GetChild(0));
-                    newResource.GetComponent<Image>().color = newTile.Resources[r].Color;
+                    newResource.GetComponent<Image>().color = map.GetTile(i,y).Resources[r].Color;
                 }
                 
             }
