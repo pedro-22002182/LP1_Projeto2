@@ -8,7 +8,13 @@ public class MenuController : MonoBehaviour
     private bool IsMenu;
     public void CloseGame()
     {
+#if UNITY_STANDALONE
         Application.Quit();
+#endif
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 
     public void OpenAnotherMapFile()
