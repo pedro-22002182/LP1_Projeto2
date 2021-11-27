@@ -13,25 +13,25 @@ public class View : MonoBehaviour
     // /////////////////////
 
     /// <summary>GameObjects that represent a exemple for instantiate and build the visual.</summary>
-    [SerializeField] private GameObject tile, detailTile, resource;
+    [SerializeField] private GameObject _tile, _detailTile, _resource;
 
     /// <summary>Responsible for showing tiles in a organization grid.</summary>
-    [SerializeField] private GridLayoutGroup gridTiles;
+    [SerializeField] private GridLayoutGroup _gridTiles;
 
-    private Map map;
+    private Map _map;
 
     // Start is called before the first frame update
     void Start()
     {
-        map = GameObject.Find("Map").GetComponent<Map>();
+        _map = GameObject.Find("Map").GetComponent<Map>();
 
-        int collumns = map.Cols;
-        int rows = map.Rows;
+        int collumns = _map.Cols;
+        int rows = _map.Rows;
 
         SetGridTiles(rows, collumns);
         BuildViewMap(rows, collumns);
 
-        Destroy(tile.gameObject);
+        Destroy(_tile.gameObject);
     }
 
     private void BuildViewMap(int lines, int collumns)
@@ -40,39 +40,37 @@ public class View : MonoBehaviour
         {
             for(int y = 0; y < collumns; y++)
             {
-                GameObject newTileGameObject = Instantiate(tile, transform);
-                
-                Debug.Log(newTileGameObject.name);
+                GameObject newTileGameObject = Instantiate(_tile, transform);
 
-                Tile newTile = map.GetTile(i,y);
-
+                Tile newTile = _map.GetTile(i,y);
                 newTileGameObject.GetComponent<Tile>().ChangeTile(newTile.Terrain.ToString().ToLower(), newTile.Resources);
                 newTileGameObject.GetComponent<Image>().color = newTile.Color;
                 
-                GridLayoutGroup gridResources = newTileGameObject.transform.GetChild(0).GetComponent<GridLayoutGroup>();
-                SetGridResources(gridResources, newTile.Resources.Count, gridTiles.cellSize.x, gridTiles.cellSize.y);
-
-                for(int r = 0; r < newTile.Resources.Count; r++)
-                {
-                    GameObject newResource = Instantiate(resource, newTileGameObject.transform.GetChild(0));
-                    newResource.GetComponent<Image>().color = newTile.Resources[r].Color;
-                }
-                
+                BuildViewResource(newTileGameObject, newTile);
             }
         }
     }
 
+    private void BuildViewResource(GameObject newTileGameObject, Tile newTile)
+    {
+        GridLayoutGroup gridResources = newTileGameObject.transform.GetChild(0).GetComponent<GridLayoutGroup>();
+        SetGridResources(gridResources, newTile.Resources.Count, _gridTiles.cellSize.x, _gridTiles.cellSize.y);
+
+        for(int r = 0; r < newTile.Resources.Count; r++)
+        {
+            GameObject newResource = Instantiate(_resource, newTileGameObject.transform.GetChild(0));
+            newResource.GetComponent<Image>().color = newTile.Resources[r].Color;
+        }
+    }
 
     private void SetGridTiles(int lines, int collumns)
     {
-        gridTiles.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-        gridTiles.constraintCount = collumns;
+        _gridTiles.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+        _gridTiles.constraintCount = collumns;
 
-        gridTiles.cellSize = new Vector2(1600 / collumns, 900 / lines);
+        _gridTiles.cellSize = new Vector2(1600 / collumns, 900 / lines);
     }
 
-
-    //MUDAR PARA SER AUTOMATICO
     private void SetGridResources(GridLayoutGroup grid ,int num, float sizeX, float sizeY)
     {
         if(num == 0)
@@ -81,21 +79,21 @@ public class View : MonoBehaviour
         grid.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(sizeX/1.5f, sizeY/1.5f);
  
         grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-        grid.constraintCount = Mathf.RoundToInt(num/2) + 1;
+        grid.constraintCount = 6; //Mathf.RoundToInt(num/2) + 1;
 
-        grid.cellSize = new Vector2(sizeY / 5, sizeY / 5);
+        grid.cellSize = new Vector2((sizeX/1.5f) / 6, (sizeX/1.5f) / 6);
     }
 
     //Ativar Detalhes Tile
     public void OpenTile(Tile tile)
     {
-        DestroyChildren(detailTile.transform.GetChild(4));
-        detailTile.SetActive(true);
+        DestroyChildren(_detailTile.transform.GetChild(4));
+        _detailTile.SetActive(true);
 
-        detailTile.GetComponent<Image>().color = tile.Color;
-        detailTile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = tile.GoldProduced.ToString();
-        detailTile.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = tile.FoodProduced.ToString();
-        detailTile.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = tile.Terrain.ToString();
+        _detailTile.GetComponent<Image>().color = tile.Color;
+        _detailTile.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = tile.GoldProduced.ToString();
+        _detailTile.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = tile.FoodProduced.ToString();
+        _detailTile.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = tile.Terrain.ToString();
         
         string resources = "";
 
@@ -104,14 +102,14 @@ public class View : MonoBehaviour
             resources += " " + r.Type;
         }
 
-        detailTile.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = resources;
+        _detailTile.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = resources;
         
-        GridLayoutGroup gridResources = detailTile.transform.GetChild(4).GetComponent<GridLayoutGroup>();
+        GridLayoutGroup gridResources = _detailTile.transform.GetChild(4).GetComponent<GridLayoutGroup>();
         SetGridResources(gridResources, tile.Resources.Count, 400, 400);
 
         for(int r = 0; r < tile.Resources.Count; r++)
         {
-            GameObject newResource = Instantiate(resource, detailTile.transform.GetChild(4));
+            GameObject newResource = Instantiate(_resource, _detailTile.transform.GetChild(4));
             newResource.GetComponent<Image>().color = tile.Resources[r].Color;
         }
     }

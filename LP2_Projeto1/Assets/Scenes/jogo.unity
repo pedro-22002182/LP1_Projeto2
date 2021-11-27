@@ -602,7 +602,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 30, y: 30}
@@ -1986,10 +1986,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c850b6be81638154da8917186647d203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tile: {fileID: 1653468447}
-  detailTile: {fileID: 1719555842}
-  resource: {fileID: 6160483241377062540, guid: c7e30409b860c8942a1e7a332149f942, type: 3}
-  gridTiles: {fileID: 1658914909}
+  _tile: {fileID: 1653468447}
+  _detailTile: {fileID: 1719555842}
+  _resource: {fileID: 6160483241377062540, guid: c7e30409b860c8942a1e7a332149f942, type: 3}
+  _gridTiles: {fileID: 1658914909}
 --- !u!114 &1658914909
 MonoBehaviour:
   m_ObjectHideFlags: 0
