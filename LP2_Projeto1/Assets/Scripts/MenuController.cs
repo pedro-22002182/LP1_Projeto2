@@ -21,9 +21,9 @@ public class MenuController : MonoBehaviour
     {
         SceneManager.LoadScene("StartMenu");
     }
-    void update()
+    void Update()
     {
-        if(Input.GetKeyDown(KeyCode.E))
+        if(Input.GetKeyDown(KeyCode.Escape))
         {
             Debug.Log("+ressed");
             IsMenu = !IsMenu;
