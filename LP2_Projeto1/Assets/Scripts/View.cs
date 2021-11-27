@@ -98,7 +98,7 @@ public class View : MonoBehaviour
         _gridTiles.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         _gridTiles.constraintCount = collumns;
 
-        _gridTiles.cellSize = new Vector2(1600 / collumns, 900 / lines);
+        _gridTiles.cellSize = new Vector2(transform.parent.GetComponent<RectTransform>().sizeDelta.x / collumns, transform.parent.GetComponent<RectTransform>().sizeDelta.y / lines);
     }
 
     private void SetGridResources(GridLayoutGroup grid ,int num, float sizeX, float sizeY)
