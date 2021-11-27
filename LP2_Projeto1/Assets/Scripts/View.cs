@@ -29,12 +29,12 @@ public class View : MonoBehaviour
         int rows = _map.Rows;
 
         SetGridTiles(rows, collumns);
-        BuildViewMap(rows, collumns);
+        DrawMap(rows, collumns);
 
         Destroy(_tile.gameObject);
     }
 
-    private void BuildViewMap(int lines, int collumns)
+    private void DrawMap(int lines, int collumns)
     {
         for(int i = 0; i < lines; i++)
         {
@@ -46,12 +46,12 @@ public class View : MonoBehaviour
                 newTileGameObject.GetComponent<Tile>().ChangeTile(newTile.Terrain.ToString().ToLower(), newTile.Resources);
                 newTileGameObject.GetComponent<Image>().color = newTile.Color;
                 
-                BuildViewResource(newTileGameObject, newTile);
+                DrawResources(newTileGameObject, newTile);
             }
         }
     }
 
-    private void BuildViewResource(GameObject newTileGameObject, Tile newTile)
+    private void DrawResources(GameObject newTileGameObject, Tile newTile)
     {
         GridLayoutGroup gridResources = newTileGameObject.transform.GetChild(0).GetComponent<GridLayoutGroup>();
         SetGridResources(gridResources, newTile.Resources.Count, _gridTiles.cellSize.x, _gridTiles.cellSize.y);
@@ -117,7 +117,7 @@ public class View : MonoBehaviour
 
     public void DestroyChildren(Transform t)
     {
-        for(int i = t.GetChildCount() - 1 ; i >= 0; i--)
+        for(int i = t.childCount - 1 ; i >= 0; i--)
         {
             Destroy(t.GetChild(i).gameObject);
         }
