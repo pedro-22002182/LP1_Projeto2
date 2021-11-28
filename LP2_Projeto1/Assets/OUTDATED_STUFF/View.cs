@@ -21,12 +21,12 @@ public class View : MonoBehaviour
     /// <summary>Responsible for showing tiles in an organization grid.</summary>
     [SerializeField] private GridLayoutGroup _gridTiles;
 
-    private Map _map;
+    private OldMap _map;
 
     // Start is called before the first frame update
     void Start()
     {
-        _map = GameObject.Find("Map").GetComponent<Map>();
+        _map = GameObject.Find("Map").GetComponent<OldMap>();
 
         int collumns = _map.Cols;
         int rows = _map.Rows;

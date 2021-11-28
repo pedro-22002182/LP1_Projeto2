@@ -8,7 +8,7 @@ using SimpleFileBrowser;
 
 public class MapBuilder : MonoBehaviour
 {
-    [SerializeField] private Map _map;
+    [SerializeField] private OldMap _map;
     private readonly string[] _availableResources = {"plants","animals","metals","fossilfuel","luxury","pollution"};
 
 

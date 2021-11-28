@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TestMap : MonoBehaviour
+public class Map : MonoBehaviour
 {  
     
      // ///////////////////////

@@ -124,7 +124,7 @@ public class Controller : MonoBehaviour
     {
         for(int i = 1; i < line.Length; i++)
         {
-            if(Array.Exists(TestMap.AvailableResources, r => r == line[i]))
+            if(Array.Exists(Map.AvailableResources, r => r == line[i]))
             {
                 resourceList.Add(new Resource(line[i]));
             }

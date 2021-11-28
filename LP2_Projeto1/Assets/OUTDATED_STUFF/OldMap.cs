@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Map : MonoBehaviour
+public class OldMap : MonoBehaviour
 {
     public int Rows { get => _mapSize.rows; }
     public int Cols { get => _mapSize.cols; }
@@ -8,7 +8,7 @@ public class Map : MonoBehaviour
     private (int rows, int cols) _mapSize;
     private Tile[,] _tiles;
 
-    public Map((int cols, int lines) mapSize)
+    public OldMap((int cols, int lines) mapSize)
     {
         _mapSize = mapSize;
         _tiles = new Tile[Rows, Cols];
