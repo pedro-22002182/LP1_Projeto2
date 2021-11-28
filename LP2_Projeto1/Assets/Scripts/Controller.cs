@@ -142,6 +142,7 @@ public class Controller : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
     }
+
     /// <summary>
     /// Loads a new scene
     /// </summary>
@@ -150,6 +151,9 @@ public class Controller : MonoBehaviour
         SceneManager.LoadScene("Instructions");
     }
 
+    /// <summary>
+    /// Loads a new scene
+    /// </summary>
     public void LoadMainMenuScene()
     {
         SceneManager.LoadScene("MainMenu");
