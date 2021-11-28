@@ -6,11 +6,20 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using SimpleFileBrowser;
 
+/// <summary>
+/// <c>The Controller class<c>
+/// Its responsable for searching files on the users computer.
+/// It can only open files with .map4x extension.
+/// Based on the information in this file, a map is created.
+/// </summary>
 public class Controller : MonoBehaviour
 {
     [SerializeField]
     private MapContainer _mapContainer;
 
+    /// <summary>
+    /// This allows the player to choose a file while excluding any file type that is not .map4x.
+    /// </summary>
     public void ChooseFile()
     {
         FileBrowser.SetFilters(false, new FileBrowser.Filter("Maps", ".map4x"));
@@ -21,6 +30,12 @@ public class Controller : MonoBehaviour
         StartCoroutine(ShowLoadDialogCoroutine());
     }
 
+    /// <summary>
+    /// This represents the visual part of the file selection process.
+    /// Once a file is selected, if its a correct file the map will be built 
+    /// based on that information on the "Game" scene.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator ShowLoadDialogCoroutine()
     {
         yield return FileBrowser.WaitForLoadDialog(FileBrowser.PickMode.Files, false, null, null, "Select a file", "Select");
@@ -33,9 +48,14 @@ public class Controller : MonoBehaviour
 		}
     }
 
+    /// <summary>
+    /// Build map based on the file information provided
+    /// </summary>
     private void BuildMap()
     {
-        //ler ficheiro
+        /// <summary>
+        /// Read File
+        /// </summary>
         int count = 1, currentLine = 0, currentCol = 0;
         string[] fileLines = File.ReadAllLines(FileBrowser.Result[0]);
         ICollection<Resource> currentResources = new List<Resource>();
@@ -45,16 +65,16 @@ public class Controller : MonoBehaviour
 
         while (count <= (_mapContainer.Map.Rows * _mapContainer.Map.Cols))
         {
-            // Atualizar linha atual
+            // Update current line of text
             string[] fileLine = fileLines[count].Split();
 
-            // Obter o tipo de terreno
+            // The first word in each line represents the terrain type
             string currentTerrain = fileLine[0];
 
-            // Limpar a lista de recursos a aplicar ao terreno
+            // Clear current resource list and apply it to the terrain 
             currentResources.Clear();
 
-            // Obter recursos, caso haja algum
+            // Check if there are any resources and if so check what they are 
             if (fileLine.Length > 1)
             {
                 GetResources(fileLine, currentResources);
@@ -62,13 +82,13 @@ public class Controller : MonoBehaviour
 
             _mapContainer.Map.SetTile(currentLine, currentCol, new Tile(currentTerrain, currentResources));
 
-            // Ultima coluna ? Passar para a proxima linha : Avancar para a proxima coluna
+            // If its the last collum, skip to the next line 
             if (count % _mapContainer.Map.Cols == 0)
             {
                 currentLine++;
                 currentCol = 0;
                 count++;
-                continue; // continue passa para a proxima iteracao do ciclo, saltando o codigo que poderia vir a seguir
+                continue; 
             }
             else
             {
@@ -78,6 +98,12 @@ public class Controller : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This returns the size of the map based on the first line of text
+    /// </summary>
+    /// <param name="rows">Number of rows in map</param>
+    /// <param name="line">Number of Colums in map</param>
+    /// <returns></returns>
     private (int rows, int cols) GetMapSize(string line)
     {
         int rows, cols;
@@ -86,7 +112,14 @@ public class Controller : MonoBehaviour
 
         return (rows, cols);
     }
-
+    /// <summary>
+    /// This cycles through all lines of text and gets the resource types present in each terrain
+    /// # this symbol represents when a new row begins
+    /// </summary>
+    /// <param name="line">If the line has more than 1 word, this means we create an array 
+    /// and each word afther the first one represents a resource.
+    /// </param>
+    /// <param name="resourceList">This represents a list of the current resources on each terrain</param>
     private void GetResources(string[] line, ICollection<Resource> resourceList)
     {
         for(int i = 1; i < line.Length; i++)
@@ -96,12 +129,6 @@ public class Controller : MonoBehaviour
                 resourceList.Add(new Resource(line[i]));
             }
             else if(line[i] == "#") break;
-            else
-            {
-                Debug.Log("Ficheiro errado");
-                //FAZER BOTAO PARA ABRIR SCENE NOVAMENTE
-            }
-
         }
     }
 
@@ -115,7 +142,9 @@ public class Controller : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
     }
-
+    /// <summary>
+    /// Loads a new scene
+    /// </summary>
     public void LoadInstructionsScene()
     {
         SceneManager.LoadScene("Instructions");
