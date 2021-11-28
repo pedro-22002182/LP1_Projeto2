@@ -8,7 +8,7 @@ using SimpleFileBrowser;
 
 /// <summary>
 /// <c>The Controller class<c>
-/// Its responsable for searching files on the users computer.
+/// It is responsible for searching files on the users computer.
 /// It can only open files with .map4x extension.
 /// Based on the information in this file, a map is created.
 /// </summary>
@@ -18,7 +18,9 @@ public class Controller : MonoBehaviour
     private MapContainer _mapContainer;
 
     /// <summary>
-    /// This allows the player to choose a file while excluding any file type that is not .map4x.
+    /// Sets up the File Browser and starts the coroutine that asks the user for
+    /// a file.
+    /// The loaded file will contain the information for the map creation.
     /// </summary>
     public void ChooseFile()
     {
@@ -35,11 +37,11 @@ public class Controller : MonoBehaviour
     /// Once a file is selected, if its a correct file the map will be built 
     /// based on that information on the "Game" scene.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>The path of the chosen file.</returns>
     private IEnumerator ShowLoadDialogCoroutine()
     {
-        yield return FileBrowser.WaitForLoadDialog(FileBrowser.PickMode.Files, false, null, null, "Select a file", "Select");
-        Debug.Log( FileBrowser.Success );
+        yield return FileBrowser.WaitForLoadDialog(FileBrowser.PickMode.Files,
+            false, null, null, "Select a file", "Select");
 
         if( FileBrowser.Success )
 		{
@@ -49,20 +51,21 @@ public class Controller : MonoBehaviour
     }
 
     /// <summary>
-    /// Build map based on the file information provided
+    /// Builds the map based on the information provided on the file.
     /// </summary>
     private void BuildMap()
     {
-        /// <summary>
-        /// Read File
-        /// </summary>
+        // Auxiliary variables
         int count = 1, currentLine = 0, currentCol = 0;
-        string[] fileLines = File.ReadAllLines(FileBrowser.Result[0]);
         ICollection<Resource> currentResources = new List<Resource>();
 
-        //_map = new Map(GetMapSize(fileLines[0]));
-        _mapContainer.Map.SetSize(GetMapSize(fileLines[0]));
+        // Array containing all the lines of the file
+        string[] fileLines = File.ReadAllLines(FileBrowser.Result[0]);
 
+        // Set the map size
+        _mapContainer.Map.SetSize(GetMapSize(fileLines[0]));
+        
+        // Go through all the lines on the file
         while (count <= (_mapContainer.Map.Rows * _mapContainer.Map.Cols))
         {
             // Update current line of text
@@ -71,7 +74,8 @@ public class Controller : MonoBehaviour
             // The first word in each line represents the terrain type
             string currentTerrain = fileLine[0];
 
-            // Clear current resource list and apply it to the terrain 
+            // Clear the resource list in each cycle so we don't get resources
+            // from the last iteration
             currentResources.Clear();
 
             // Check if there are any resources and if so check what they are 
@@ -80,9 +84,11 @@ public class Controller : MonoBehaviour
                 GetResources(fileLine, currentResources);
             }
 
-            _mapContainer.Map.SetTile(currentLine, currentCol, new Tile(currentTerrain, currentResources));
+            // Place a new tile on the map
+            _mapContainer.Map.SetTile(currentLine, currentCol, new Tile(
+                currentTerrain, currentResources));
 
-            // If its the last collum, skip to the next line 
+            // If its the last column, skip to the next line 
             if (count % _mapContainer.Map.Cols == 0)
             {
                 currentLine++;
@@ -90,7 +96,7 @@ public class Controller : MonoBehaviour
                 count++;
                 continue; 
             }
-            else
+            else // otherwise go to the next column
             {
                 currentCol++;
                 count++;
@@ -99,11 +105,11 @@ public class Controller : MonoBehaviour
     }
 
     /// <summary>
-    /// This returns the size of the map based on the first line of text
+    /// This returns the size of the map based on the first line of text.
     /// </summary>
-    /// <param name="rows">Number of rows in map</param>
-    /// <param name="line">Number of Colums in map</param>
-    /// <returns></returns>
+    /// <param name="rows">Number of rows in the map.</param>
+    /// <param name="line">Number of columns in map.</param>
+    /// <returns>Map size.</returns>
     private (int rows, int cols) GetMapSize(string line)
     {
         int rows, cols;
@@ -113,13 +119,17 @@ public class Controller : MonoBehaviour
         return (rows, cols);
     }
     /// <summary>
-    /// This cycles through all lines of text and gets the resource types present in each terrain
-    /// # this symbol represents when a new row begins
+    /// This cycles through all lines of text and gets the resource types present
+    /// in each terrain.
+    /// # -> This symbol represents a comment, which is ignored.
     /// </summary>
-    /// <param name="line">If the line has more than 1 word, this means we create an array 
-    /// and each word afther the first one represents a resource.
+    /// <param name="line">
+    /// The line of text that is currently being analyzed.
     /// </param>
-    /// <param name="resourceList">This represents a list of the current resources on each terrain</param>
+    /// <param name="resourceList">
+    /// List to which the resources will be added, and then will be applied
+    /// to the tile.
+    /// </param>
     private void GetResources(string[] line, ICollection<Resource> resourceList)
     {
         for(int i = 1; i < line.Length; i++)
@@ -132,6 +142,10 @@ public class Controller : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Closes or stops the application, depending on if a build is running or
+    /// the application is being played on the Unity editor.
+    /// </summary>
     public void QuitApplication()
     {
 #if UNITY_STANDALONE
@@ -142,14 +156,18 @@ public class Controller : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
     }
+
     /// <summary>
-    /// Loads a new scene
+    /// Loads the Instructions scene.
     /// </summary>
     public void LoadInstructionsScene()
     {
         SceneManager.LoadScene("Instructions");
     }
 
+    /// <summary>
+    /// Loads the MainMenu scene.
+    /// </summary>
     public void LoadMainMenuScene()
     {
         SceneManager.LoadScene("MainMenu");

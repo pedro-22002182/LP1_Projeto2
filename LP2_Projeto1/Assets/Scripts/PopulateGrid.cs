@@ -2,13 +2,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+/// <summary>
+/// The <c>PopulateGrid</c> class.
+/// Responsible for drawing the map, based on its information.
+/// </summary>
 public class PopulateGrid : MonoBehaviour
-{   
-    
+{     
     // ///////////////////////
     // Instance variables  //
-    // /////////////////////
-    
+    // ///////////////////// 
 
     /// <summary> Tile prefab to be instanciated. </summary>
     [SerializeField]
@@ -29,12 +31,13 @@ public class PopulateGrid : MonoBehaviour
     [SerializeField]
     private MapContainer _mapContainer;
 
-    /// <summary> Group of tiles. </summary>
+    /// <summary> Grid where the tiles will be placed of the screen. </summary>
     [SerializeField]
     private GridLayoutGroup _tilesGrid;
 
     /// <summary>
-    /// Define the size of map variables.
+    /// Sets up the grid and populates it with the visual representation of
+    /// the tiles.
     /// </summary>
     private void Start()
     {
@@ -47,7 +50,8 @@ public class PopulateGrid : MonoBehaviour
     }
 
     /// <summary>
-    /// Visual representation of the terrain type and the resources that each of them contains.
+    /// Populates a grid with the visual representation of each tile contained
+    /// on the map.
     /// </summary>
     private void Populate()
     {
@@ -58,30 +62,37 @@ public class PopulateGrid : MonoBehaviour
         {
             for (int col = 0; col < _mapContainer.Map.Cols; col++)
             {   
-                //Instantiate tile with its respective information.
+                //Instantiate tile with its respective information
                 newObj = (GameObject)Instantiate(tilePrefab, transform);
-                newObj.GetComponent<Image>().color = _mapContainer.Map.GetTile(row, col).Color;
 
+                // Change the image's color to the tile's color
+                newObj.GetComponent<Image>().color =
+                    _mapContainer.Map.GetTile(row, col).Color;
+
+                // Get reference to the current tile so we can get its information
                 Tile newTile = _mapContainer.Map.GetTile(row, col);
-
                 newObj.GetComponent<Tile>().ChangeTile(
                     newTile.Terrain.ToString().ToLower(), newTile.Resources);
                 
-                //Instantiate resources of each tile.
-                GridLayoutGroup resourceGrid = newObj.GetComponentInChildren<GridLayoutGroup>();
+                //Instantiate resources of each tile
+                GridLayoutGroup resourceGrid =
+                    newObj.GetComponentInChildren<GridLayoutGroup>();
+                
+                // Setup the grid where the tile's resources will be shown
                 SetGridResources(resourceGrid, 3, 15);
 
+                // Draw the visual representation of the tile's resources
                 DrawResource(resourceGrid, _mapContainer.Map.GetTile(row, col));
             }
         }
     }
 
-
     /// <summary>
-    /// Define the sizes of the table of tiles, ir order to fill the entire screen(Main Grid).
+    /// Define the sizes of the table of tiles, ir order to fill the entire
+    /// screen(Main Grid).
     /// </summary>
-    /// <param name="row">Represents lines of the map</param>
-    /// <param name="col">Represents colums of the map</param>
+    /// <param name="row">Represents lines of the map.</param>
+    /// <param name="col">Represents columns of the map.</param>
     /// <returns></returns>
     private int GetSizeCells(int row, int col)
     {
@@ -96,7 +107,9 @@ public class PopulateGrid : MonoBehaviour
     /// <summary>
     /// Instantiate resources in each tile with corresponding visual representation.
     /// </summary>
-    /// <param name="grid">Represents the table where the resources of a specific tile are located</param>
+    /// <param name="grid">
+    /// Grid where the resources of a specific tile will be shown.
+    /// </param>
     /// <param name="currentTile">Specific tile</param>
     private void DrawResource(GridLayoutGroup grid, Tile currentTile)
     {
@@ -109,18 +122,19 @@ public class PopulateGrid : MonoBehaviour
         }
     }
 
-
     /// <summary>
-    /// Construction of the table of resources of each tile.
+    /// Sets up the grid where the resources of each tile will be shown.
     /// </summary>
-    /// <param name="grid">Represents the table where the resources of a specific tile are located</param>
-    /// <param name="maxCellsPerRow">Max number of cells in each row</param>
-    /// <param name="cellSize">Size of resource cell</param>
-    private void SetGridResources(GridLayoutGroup grid, int maxCellsPerRow, int cellSize)
+    /// <param name="grid">
+    /// Grid where the resources of a specific tile will be shown.
+    /// </param>
+    /// <param name="maxCellsPerRow">Max number of cells in each row.</param>
+    /// <param name="cellSize">Size of resource cell.</param>
+    private void SetGridResources(GridLayoutGroup grid, int maxCellsPerRow, 
+                                    int cellSize)
     {
         grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-        grid.constraintCount = maxCellsPerRow; // CHANGE THIS INTO RESOURCE COUNT, PROBABLY NEED TO CREATE A PROPERTY ON MAP CONTAINING THE AVAILABLE RESOURCES
-
+        grid.constraintCount = maxCellsPerRow;
         grid.cellSize = new Vector2(cellSize, cellSize);
     }
 
@@ -130,20 +144,28 @@ public class PopulateGrid : MonoBehaviour
     /// <param name="tile"> Represents specific tile</param>
     public void OpenTile(Tile tile)
     {
+        // Clear information from the last pressed tile
         DestroyChildren(_tileInformation.transform.GetChild(4));
+
+        // Activate tile informartion
         _tileInformation.SetActive(true);
 
+        // Change color to the pressed tile's color
         _tileInformation.GetComponent<Image>().color = tile.Color;
 
+        // Set the amount of gold produced
         _tileInformation.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text =
             "Gold produced: " + tile.GoldProduced.ToString();
 
+        // Set the amount of food produced
         _tileInformation.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text =
             "Food produced: " + tile.FoodProduced.ToString();
 
+        // Set the type of terain
         _tileInformation.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text =
             "Terrain: " + tile.Terrain.ToString();
         
+        // Set the resources
         string resources = "";
 
         foreach(Resource r in tile.Resources)
@@ -154,11 +176,14 @@ public class PopulateGrid : MonoBehaviour
         _tileInformation.transform.GetChild(3).GetComponent<TextMeshProUGUI>().text =
             "Resources: " + resources;
         
+        // Get reference of the grid where the resources will be displayed
         GridLayoutGroup gridResources =
             _tileInformation.transform.GetChild(4).GetComponent<GridLayoutGroup>();
 
+        // Setup the grid
         SetGridResources(gridResources, 6, 30);
 
+        // Display the resources
         for(int r = 0; r < tile.Resources.Count; r++)
         {
             GameObject newResource =
