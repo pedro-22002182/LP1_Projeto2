@@ -17,6 +17,9 @@ public class Controller : MonoBehaviour
     [SerializeField]
     private MapContainer _mapContainer;
 
+    [SerializeField]
+    private GameObject _canvasError;
+
     /// <summary>
     /// Sets up the File Browser and starts the coroutine that asks the user for
     /// a file.
@@ -140,6 +143,12 @@ public class Controller : MonoBehaviour
             }
             else if(line[i] == "#") break;
         }
+    }
+
+
+    public void FoundError()
+    {
+        _canvasError.SetActive(true);
     }
 
     /// <summary>
