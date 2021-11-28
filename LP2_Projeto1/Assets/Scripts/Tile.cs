@@ -12,6 +12,9 @@ public class Tile : MonoBehaviour
             {"mountain", TerrainType.Mountain},
             {"ocean", TerrainType.Ocean}
         };
+    
+    public static readonly string[] AvailableTerrains =
+        {"desert", "grassland", "hills", "mountain", "ocean"};
 
     private ICollection<Resource> _resources;
     private TerrainType _terrainType;

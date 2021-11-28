@@ -20,6 +20,15 @@ public class Controller : MonoBehaviour
     [SerializeField]
     private GameObject _canvasError;
 
+    public string UnknownWord { get; private set; }
+    public int? UnknownWordLine { get; private set; }
+
+    private void Start()
+    {
+        UnknownWord = null;
+        UnknownWordLine = null;
+    }
+
     /// <summary>
     /// Sets up the File Browser and starts the coroutine that asks the user for
     /// a file.
@@ -48,15 +57,15 @@ public class Controller : MonoBehaviour
 
         if( FileBrowser.Success )
 		{
-            BuildMap();
-            SceneManager.LoadScene("Game");
+            if (BuildMap())
+                SceneManager.LoadScene("Game");
 		}
     }
 
     /// <summary>
     /// Builds the map based on the information provided on the file.
     /// </summary>
-    private void BuildMap()
+    private bool BuildMap()
     {
         // Auxiliary variables
         int count = 1, currentLine = 0, currentCol = 0;
@@ -65,12 +74,12 @@ public class Controller : MonoBehaviour
         // Array containing all the lines of the file
         string[] fileLines = File.ReadAllLines(FileBrowser.Result[0]);
 
+        // Analyze first line
+        if (!ProcessFirstLine(fileLines[0]))
+            return false;
+
         // Set the map size and see if the numbers are over 0
-        if(_mapContainer.Map.SetSize(GetMapSize(fileLines[0])) == false)
-        {
-            FoundError();
-            return;
-        }
+        _mapContainer.Map.SetSize(GetMapSize(fileLines[0]));
         
         // Go through all the lines on the file
         while (count <= (_mapContainer.Map.Rows * _mapContainer.Map.Cols))
@@ -81,6 +90,15 @@ public class Controller : MonoBehaviour
             // The first word in each line represents the terrain type
             string currentTerrain = fileLine[0];
 
+            // Check if terrain exists
+            if (!ProccessTerrain(currentTerrain))
+            {
+                UnknownWord = currentTerrain;
+                UnknownWordLine = count;
+                ErrorFound(ErrorCode.UnknownTerrain);
+                return false;
+            }
+
             // Clear the resource list in each cycle so we don't get resources
             // from the last iteration
             currentResources.Clear();
@@ -88,7 +106,12 @@ public class Controller : MonoBehaviour
             // Check if there are any resources and if so check what they are 
             if (fileLine.Length > 1)
             {
-                GetResources(fileLine, currentResources);
+                if (!GetResources(fileLine, currentResources))
+                {
+                    UnknownWordLine = count;
+                    ErrorFound(ErrorCode.UnknownResource);
+                    return false;
+                }    
             }
 
             // Place a new tile on the map
@@ -109,6 +132,7 @@ public class Controller : MonoBehaviour
                 count++;
             }
         }
+        return true;
     }
 
     /// <summary>
@@ -125,6 +149,7 @@ public class Controller : MonoBehaviour
 
         return (rows, cols);
     }
+
     /// <summary>
     /// This cycles through all lines of text and gets the resource types present
     /// in each terrain.
@@ -137,7 +162,7 @@ public class Controller : MonoBehaviour
     /// List to which the resources will be added, and then will be applied
     /// to the tile.
     /// </param>
-    private void GetResources(string[] line, ICollection<Resource> resourceList)
+    private bool GetResources(string[] line, ICollection<Resource> resourceList)
     {
         for(int i = 1; i < line.Length; i++)
         {
@@ -146,13 +171,44 @@ public class Controller : MonoBehaviour
                 resourceList.Add(new Resource(line[i]));
             }
             else if(line[i] == "#") break;
+            else
+            {
+                UnknownWord = line[i];
+                return false;
+            }
         }
+        return true;
     }
 
-
-    public void FoundError()
+    private bool ProccessTerrain(string terrain)
     {
-        _canvasError.SetActive(true);
+        return Array.Exists(Tile.AvailableTerrains, t => t == terrain);
+    }
+
+    private bool ProcessFirstLine(string line)
+    {
+        int aux1, aux2;
+        string[] auxStr = line.Split();
+
+        if (auxStr.Length != 2 && auxStr[2][0] != '#')
+        {
+            OnErrorFound(ErrorCode.NoMapSize);
+            return false;
+        }
+
+        if (!Int32.TryParse(auxStr[0], out aux1) || !Int32.TryParse(
+            auxStr[1], out aux2))
+        {
+            OnErrorFound(ErrorCode.NoMapSize);
+            return false;
+        }
+        
+        if (aux1 < 1 || aux2 < 1)
+        {
+            OnErrorFound(ErrorCode.InvalidMapSize);
+        }
+        
+        return true;
     }
 
     /// <summary>
@@ -185,4 +241,10 @@ public class Controller : MonoBehaviour
     {
         SceneManager.LoadScene("MainMenu");
     }
+    
+    private void OnErrorFound(ErrorCode errorCode)
+    {
+        ErrorFound?.Invoke(errorCode);
+    }
+    public event Action<ErrorCode> ErrorFound;
 }
