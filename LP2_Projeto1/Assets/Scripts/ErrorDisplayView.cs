@@ -18,6 +18,11 @@ public class ErrorDisplayView : MonoBehaviour
         _controller.ErrorFound += DisplayErrorMessage;
     }
 
+    private void OnDisable()
+    {
+        _controller.ErrorFound -= DisplayErrorMessage;
+    }
+
     private void DisplayErrorMessage(ErrorCode errorCode)
     {
         string message = ProccessErrorCode(errorCode);
