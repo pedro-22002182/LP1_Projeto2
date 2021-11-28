@@ -86,8 +86,13 @@ public class Tile : MonoBehaviour
         DefineResources(resources);
     }
 
+     /// <summary>
+    /// Initializes all the instance variables of the <c>Tile</c> class.
+    /// </summary>
     private void DefineBaseValues()
     {
+        // The terrain type will define the values of the given bonuses and
+        // the color that visually represents the terrain.
         switch (Terrain)
         {
             case TerrainType.Desert:
@@ -122,6 +127,10 @@ public class Tile : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Adds resources to a list
+    /// </summary>
+    /// <param name="resources">Resources in List</param>
     public void DefineResources(ICollection<Resource> resources)
     {
         foreach (Resource r in resources)
