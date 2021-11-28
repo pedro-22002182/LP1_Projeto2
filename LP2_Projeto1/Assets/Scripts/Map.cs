@@ -78,9 +78,13 @@ public class Map : MonoBehaviour
     /// <param name="mapSize">
     /// Tuple containing the amount of rows and columns the map will have.
     /// </param>
-    public void SetSize((int cols, int lines) mapSize)
+    public bool SetSize((int cols, int lines) mapSize)
     {
+        if(mapSize.cols < 1 || mapSize.lines < 1)
+            return false;
+
         _mapSize = mapSize;
         _tiles = new Tile[Rows, Cols];
+        return true;
     }
 }

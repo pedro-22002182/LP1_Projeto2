@@ -65,8 +65,12 @@ public class Controller : MonoBehaviour
         // Array containing all the lines of the file
         string[] fileLines = File.ReadAllLines(FileBrowser.Result[0]);
 
-        // Set the map size
-        _mapContainer.Map.SetSize(GetMapSize(fileLines[0]));
+        // Set the map size and see if the numbers are over 0
+        if(_mapContainer.Map.SetSize(GetMapSize(fileLines[0])) == false)
+        {
+            FoundError();
+            return;
+        }
         
         // Go through all the lines on the file
         while (count <= (_mapContainer.Map.Rows * _mapContainer.Map.Cols))
