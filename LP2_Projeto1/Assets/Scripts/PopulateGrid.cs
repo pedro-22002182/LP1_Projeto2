@@ -3,25 +3,39 @@ using UnityEngine.UI;
 using TMPro;
 
 public class PopulateGrid : MonoBehaviour
-{
-    [SerializeField]
-    private GameObject prefab;
+{   
+    
+    // ///////////////////////
+    // Instance variables  //
+    // /////////////////////
+    
 
+    /// <summary> Tile prefab to be instanciated. </summary>
+    [SerializeField]
+    private GameObject tilePrefab;
+
+    /// <summary> Resource prefab to be instanciated. </summary>
     [SerializeField]
     private GameObject _resourcePrefab;
 
+    /// <summary> Tile with detailed information. </summary>
     [SerializeField]
     private GameObject _tileInformation;
-
+    
     [SerializeField]
     private int numberToCreate;
 
+    /// <summary> Map information is contained here. </summary>
     [SerializeField]
     private MapContainer _mapContainer;
 
+    /// <summary> Group of tiles. </summary>
     [SerializeField]
     private GridLayoutGroup _tilesGrid;
 
+    /// <summary>
+    /// Define the size of map variables.
+    /// </summary>
     private void Start()
     {
         _tilesGrid.constraintCount = _mapContainer.Map.Cols;
@@ -32,22 +46,28 @@ public class PopulateGrid : MonoBehaviour
         Populate();
     }
 
+    /// <summary>
+    /// Visual representation of the terrain type and the resources that each of them contains.
+    /// </summary>
     private void Populate()
     {
         GameObject newObj;
 
+        //Cycle through each row and colum.
         for (int row = 0; row < _mapContainer.Map.Rows; row++)
         {
             for (int col = 0; col < _mapContainer.Map.Cols; col++)
-            {
-                newObj = (GameObject)Instantiate(prefab, transform);
+            {   
+                //Instantiate tile with its respective information.
+                newObj = (GameObject)Instantiate(tilePrefab, transform);
                 newObj.GetComponent<Image>().color = _mapContainer.Map.GetTile(row, col).Color;
 
                 Tile newTile = _mapContainer.Map.GetTile(row, col);
 
                 newObj.GetComponent<Tile>().ChangeTile(
                     newTile.Terrain.ToString().ToLower(), newTile.Resources);
-
+                
+                //Instantiate resources of each tile.
                 GridLayoutGroup resourceGrid = newObj.GetComponentInChildren<GridLayoutGroup>();
                 SetGridResources(resourceGrid, 3, 15);
 
@@ -56,6 +76,28 @@ public class PopulateGrid : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Define the sizes of the table of tiles, ir order to fill the entire screen(Main Grid).
+    /// </summary>
+    /// <param name="row">Represents lines of the map</param>
+    /// <param name="col">Represents colums of the map</param>
+    /// <returns></returns>
+    private int GetSizeCells(int row, int col)
+    {
+        int menor = row < col ? row : col;
+        
+        if(col < 7 || col < 5)
+            return (int)(740.84f / menor);
+        else
+            return 100;
+    }
+
+    /// <summary>
+    /// Instantiate resources in each tile with corresponding visual representation.
+    /// </summary>
+    /// <param name="grid">Represents the table where the resources of a specific tile are located</param>
+    /// <param name="currentTile">Specific tile</param>
     private void DrawResource(GridLayoutGroup grid, Tile currentTile)
     {
         foreach (Resource r in currentTile.Resources)
@@ -67,16 +109,13 @@ public class PopulateGrid : MonoBehaviour
         }
     }
 
-    private int GetSizeCells(int row, int col)
-    {
-        int menor = row < col ? row : col;
-        
-        if(col < 7 || col < 5)
-            return (int)(740.84f / menor);
-        else
-            return 100;
-    }
 
+    /// <summary>
+    /// Construction of the table of resources of each tile.
+    /// </summary>
+    /// <param name="grid">Represents the table where the resources of a specific tile are located</param>
+    /// <param name="maxCellsPerRow">Max number of cells in each row</param>
+    /// <param name="cellSize">Size of resource cell</param>
     private void SetGridResources(GridLayoutGroup grid, int maxCellsPerRow, int cellSize)
     {
         grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
@@ -85,6 +124,10 @@ public class PopulateGrid : MonoBehaviour
         grid.cellSize = new Vector2(cellSize, cellSize);
     }
 
+    /// <summary>
+    /// Contains the detailed information of any specific tile once pressed.
+    /// </summary>
+    /// <param name="tile"> Represents specific tile</param>
     public void OpenTile(Tile tile)
     {
         DestroyChildren(_tileInformation.transform.GetChild(4));
@@ -125,6 +168,10 @@ public class PopulateGrid : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Destroy all children of gameobject
+    /// </summary>
+    /// <param name="t"></param>
     public void DestroyChildren(Transform t)
     {
         for(int i = t.childCount - 1 ; i >= 0; i--)
