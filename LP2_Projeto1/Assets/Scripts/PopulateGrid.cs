@@ -25,6 +25,9 @@ public class PopulateGrid : MonoBehaviour
     private void Start()
     {
         _tilesGrid.constraintCount = _mapContainer.Map.Cols;
+        int size = GetSizeCells(_mapContainer.Map.Rows, _mapContainer.Map.Cols);
+        _tilesGrid.cellSize = new Vector2(size, size);
+
         numberToCreate = _mapContainer.Map.Rows * _mapContainer.Map.Cols;
         Populate();
     }
@@ -46,8 +49,8 @@ public class PopulateGrid : MonoBehaviour
                     newTile.Terrain.ToString().ToLower(), newTile.Resources);
 
                 GridLayoutGroup resourceGrid = newObj.GetComponentInChildren<GridLayoutGroup>();
-
                 SetGridResources(resourceGrid, 3, 15);
+
                 DrawResource(resourceGrid, _mapContainer.Map.GetTile(row, col));
             }
         }
@@ -64,14 +67,18 @@ public class PopulateGrid : MonoBehaviour
         }
     }
 
+    private int GetSizeCells(int row, int col)
+    {
+        int menor = row < col ? row : col;
+        
+        if(col < 7 || col < 5)
+            return (int)(740.84f / menor);
+        else
+            return 100;
+    }
+
     private void SetGridResources(GridLayoutGroup grid, int maxCellsPerRow, int cellSize)
     {
-        //if(resourceAmount == 0)
-            //return;
-
-        //grid.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                //sizeX/1.5f, sizeY/1.5f);
- 
         grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         grid.constraintCount = maxCellsPerRow; // CHANGE THIS INTO RESOURCE COUNT, PROBABLY NEED TO CREATE A PROPERTY ON MAP CONTAINING THE AVAILABLE RESOURCES
 
