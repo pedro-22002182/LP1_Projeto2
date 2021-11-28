@@ -6,24 +6,24 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/TestScenes/TestMainMenu.unity
+    path: Assets/Scenes/MainMenu.unity
     guid: bd35307528f192544a982697d0ad2bdf
   - enabled: 1
-    path: Assets/Scenes/TestScenes/Instructions.unity
+    path: Assets/Scenes/Instructions.unity
     guid: fa9edb1258d3f88468d8648a4569bc1d
   - enabled: 1
-    path: Assets/Scenes/StartMenu.unity
+    path: Assets/OUTDATED_STUFF/StartMenu.unity
     guid: b405e05a483bf1041a640dbcb2600344
   - enabled: 1
-    path: Assets/Scenes/TestScenes/NewViewTesting.unity
+    path: Assets/OUTDATED_STUFF/NewViewTesting.unity
     guid: 81ea4750b9c623b4bbde246ee2524c2e
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/Jogo.unity
+    path: Assets/OUTDATED_STUFF/jogo.unity
     guid: 25a86cf242e3eeb4caaa336e34e1f46f
   - enabled: 1
-    path: Assets/Scenes/TestScenes/TestGame.unity
+    path: Assets/Scenes/Game.unity
     guid: 6b6093969f842714d8d1a689c84782b3
   m_configObjects: {}

@@ -29,7 +29,7 @@ public class Controller : MonoBehaviour
         if( FileBrowser.Success )
 		{
             BuildMap();
-            SceneManager.LoadScene("TestGame");
+            SceneManager.LoadScene("Game");
 		}
     }
 
@@ -123,6 +123,6 @@ public class Controller : MonoBehaviour
 
     public void LoadMainMenuScene()
     {
-        SceneManager.LoadScene("TestMainMenu");
+        SceneManager.LoadScene("MainMenu");
     }
 }
