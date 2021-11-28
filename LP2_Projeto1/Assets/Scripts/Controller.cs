@@ -180,16 +180,28 @@ public class Controller : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Checks if terrain is valid
+    /// </summary>
+    /// <param name="terrain">Terrain specified in file</param>
+    /// <returns>True if the terrain is valid</returns>
     private bool ProccessTerrain(string terrain)
     {
         return Array.Exists(Tile.AvailableTerrains, t => t == terrain);
     }
 
+    /// <summary>
+    /// Checks if the first line contains the necessary information for the map.
+    /// Also check if the information is valid.
+    /// </summary>
+    /// <param name="line">Current line </param>
+    /// <returns>True if the instructions are valid</returns>
     private bool ProcessFirstLine(string line)
     {
         int aux1, aux2;
         string[] auxStr = line.Split();
 
+        
         if (auxStr.Length != 2 && auxStr[2][0] != '#')
         {
             OnErrorFound(ErrorCode.NoMapSize);
@@ -246,5 +258,8 @@ public class Controller : MonoBehaviour
     {
         ErrorFound?.Invoke(errorCode);
     }
+    /// <summary>
+    /// Event in case of incorrect file input
+    /// </summary>
     public event Action<ErrorCode> ErrorFound;
 }
