@@ -1,8 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The <c>Tile</c> class.
+/// It represents a map tile, containing all its information.
+/// </summary>
 public class Tile : MonoBehaviour
 {
+    /// <summary>
+    /// A dictionary containing the key-value pairs of the possible terrains
+    /// contained in the file loaded by the user and their correspondant 
+    /// terrain type.
+    /// </summary>
+    /// <typeparam name="string">Terrain present in the loaded file.</typeparam>
+    /// <typeparam name="TerrainType">The <c>TerrainType</c>.</typeparam>
+    /// <returns></returns>
     private static readonly IDictionary<string, TerrainType> terrainDict = 
             new Dictionary<string, TerrainType>()
         {
@@ -12,18 +24,48 @@ public class Tile : MonoBehaviour
             {"mountain", TerrainType.Mountain},
             {"ocean", TerrainType.Ocean}
         };
-    
-    public static readonly string[] AvailableTerrains =
-        {"desert", "grassland", "hills", "mountain", "ocean"};
 
+    /// <summary>
+    /// Collection that contains the tile's resources.
+    /// </summary>
     private ICollection<Resource> _resources;
+
+    /// <summary>
+    /// The tile's terrain type.
+    /// </summary>
     private TerrainType _terrainType;
+
+    /// <summary>
+    /// The based value of gold produced by the tile.
+    /// </summary>
     private int _baseGoldValue;
+
+    /// <summary>
+    /// The based value of food produced by the tile.
+    /// </summary>
     private int _baseFoodValue;
+
+    /// <summary>
+    /// The tile's color representation.
+    /// </summary>
     private Color _color;
 
+    /// <summary>
+    /// Returns the tile's color representation.
+    /// </summary>
+    /// <value>The tile's color representation.</value>
     public Color Color { get => _color; }
+
+    /// <summary>
+    /// Returns the tile's terrain type.
+    /// </summary>
+    /// <value>The tile's terrain type.</value>
     public TerrainType Terrain { get => _terrainType; }
+
+    /// <summary>
+    /// Returns the tile's resources.
+    /// </summary>
+    /// <value>The tile's resources.</value>
     public List<Resource> Resources
     {
         get
@@ -37,6 +79,11 @@ public class Tile : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Returns the total amount of gold produced by the tile, which is equal to
+    /// the base gold value plus the bonuses given by each resource the tile has.
+    /// </summary>
+    /// <value>The total amount of gold produced by the tile.</value>
     public int GoldProduced
     {
         get
@@ -55,6 +102,11 @@ public class Tile : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Returns the total amount of food produced by the tile, which is equal to
+    /// the base food value plus the bonuses given by each resource the tile has.
+    /// </summary>
+    /// <value>The total amount of food produced by the tile.</value>
     public int FoodProduced
     {
         get
@@ -73,6 +125,16 @@ public class Tile : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// The <c>Tile</c>'s constructor. Used to create a new instace of the
+    /// <c>Tile</c> class.
+    /// </summary>
+    /// <param name="terrain">
+    /// The terrain type of the tile that is going to be created.
+    /// </param>
+    /// <param name="resources">
+    /// The resources of the tile that is going to be created.
+    /// </param>
     public Tile(string terrain, ICollection<Resource> resources)
     {
         terrainDict.TryGetValue(terrain, out _terrainType);
@@ -81,6 +143,15 @@ public class Tile : MonoBehaviour
         DefineResources(resources);
     }
 
+    /// <summary>
+    /// Copies a <c>Tile</c>'s information into another <c>Tile</c>.
+    /// </summary>
+    /// <param name="terrain">
+    /// The terrain of the <c>Tile</c> that is being copied.
+    /// </param>
+    /// <param name="resources">
+    /// The resources of the <c>Tile</c> that is being copied.
+    /// </param>
     public void ChangeTile(string terrain, ICollection<Resource> resources)
     {
         terrainDict.TryGetValue(terrain, out _terrainType);
@@ -131,9 +202,9 @@ public class Tile : MonoBehaviour
     }
 
     /// <summary>
-    /// Adds resources to a list
+    /// Adds resources the collection that contains the tile's resources.
     /// </summary>
-    /// <param name="resources">Resources in List</param>
+    /// <param name="resources">Resources in tile's resources collection.</param>
     public void DefineResources(ICollection<Resource> resources)
     {
         foreach (Resource r in resources)

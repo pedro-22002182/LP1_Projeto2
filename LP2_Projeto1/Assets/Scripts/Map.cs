@@ -9,8 +9,8 @@ public class Map : MonoBehaviour
 {  
     
       // //////////////////////
-     //   Class variable   //
-    // /////////////////////
+     //   Class variables   //
+    // //////////////////////
     
     /// <summary>
     /// Array that contains all the potential resources a tile can have.
@@ -18,6 +18,13 @@ public class Map : MonoBehaviour
     /// <value>Available resources.</value>
     public static readonly string[] AvailableResources =
         {"plants","animals","metals","fossilfuel","luxury","pollution"};
+
+    /// <summary>
+    /// Array that contains all the potential terrains a tile can have.
+    /// </summary>
+    /// <value></value>
+    public static readonly string[] AvailableTerrains =
+        {"desert", "grassland", "hills", "mountain", "ocean"};
 
       // //////////////////////
      //     Properties      //

@@ -20,13 +20,25 @@ public class Controller : MonoBehaviour
     /// </summary>
     [SerializeField]
     private MapContainer _mapContainer;
-    
-    // [SerializeField]
-    // private GameObject _canvasError;
 
+    /// <summary>
+    /// Property that contains that last word read in the loaded file when an
+    /// error is found.
+    /// </summary>
+    /// <value>
+    /// Last word read in the loaded file when an error is found.
+    /// </value>
     public string UnknownWord { get; private set; }
+
+    /// <summary>
+    /// Property that contains the number of the line where an error was found.
+    /// </summary>
+    /// <value>The number of the line where an error was found.</value>
     public int? UnknownWordLine { get; private set; }
 
+    /// <summary>
+    /// Initializes the properties.
+    /// </summary>
     private void Start()
     {
         UnknownWord = null;
