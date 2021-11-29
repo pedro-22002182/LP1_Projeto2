@@ -14,11 +14,15 @@ using SimpleFileBrowser;
 /// </summary>
 public class Controller : MonoBehaviour
 {
+    /// <summary>
+    /// Reference to the <c>MapContainer</c> that holds the <c>Map</c>'s 
+    /// information.
+    /// </summary>
     [SerializeField]
     private MapContainer _mapContainer;
-
-    [SerializeField]
-    private GameObject _canvasError;
+    
+    // [SerializeField]
+    // private GameObject _canvasError;
 
     public string UnknownWord { get; private set; }
     public int? UnknownWordLine { get; private set; }
@@ -181,28 +185,36 @@ public class Controller : MonoBehaviour
     }
 
     /// <summary>
-    /// Checks if terrain is valid
+    /// Checks if terrain is valid by comparing the input with the content of an
+    /// array from the <c>Tile</c> class, which has all the potential terrains a
+    /// tile can have.
     /// </summary>
-    /// <param name="terrain">Terrain specified in file</param>
-    /// <returns>True if the terrain is valid</returns>
+    /// <param name="terrain">Terrain specified in file.</param>
+    /// <returns>
+    /// True => The terrain exists in the array. 
+    /// False => The terrain doesn't exist in the array.
+    /// </returns>
     private bool ProccessTerrain(string terrain)
     {
-        return Array.Exists(Tile.AvailableTerrains, t => t == terrain);
+        return Array.Exists(Map.AvailableTerrains, t => t == terrain);
     }
 
     /// <summary>
     /// Checks if the first line contains the necessary information for the map.
     /// Also check if the information is valid.
     /// </summary>
-    /// <param name="line">Current line </param>
-    /// <returns>True if the instructions are valid</returns>
+    /// <param name="line">File's first line.</param>
+    /// <returns>
+    /// True => The information is valid.
+    /// False => The information isn't valid.
+    /// </returns>
     private bool ProcessFirstLine(string line)
     {
         int aux1, aux2;
         string[] auxStr = line.Split();
 
         
-        if (auxStr.Length != 2 && auxStr[2][0] != '#')
+        if (auxStr.Length < 2 || (auxStr.Length > 2 && auxStr[2][0] != '#'))
         {
             OnErrorFound(ErrorCode.NoMapSize);
             return false;
@@ -218,6 +230,7 @@ public class Controller : MonoBehaviour
         if (aux1 < 1 || aux2 < 1)
         {
             OnErrorFound(ErrorCode.InvalidMapSize);
+            return false;
         }
         
         return true;
@@ -254,12 +267,20 @@ public class Controller : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
     
+    /// <summary>
+    /// This method is called when an error is found in the file, making all the
+    /// event <c>ErrorFound</c>'s listeners respond to the event.
+    /// </summary>
+    /// <param name="errorCode">
+    /// The <c>ErrorCode</c> that defines the error message that is displayed.
+    /// </param>
     private void OnErrorFound(ErrorCode errorCode)
     {
         ErrorFound?.Invoke(errorCode);
     }
+
     /// <summary>
-    /// Event in case of incorrect file input
+    /// Event in case of incorrect file input.
     /// </summary>
     public event Action<ErrorCode> ErrorFound;
 }
