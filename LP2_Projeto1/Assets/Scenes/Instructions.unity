@@ -726,17 +726,18 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'To select a file, press the Select File Button and chose the desired file.
-    Keep in mind that the file extension must be .map4x
+  m_text: 'To select a file, press the ''Select File'' Button and choose the desired
+    file. Keep in mind that the file extension must be .map4x
 
 
-    While viewing a map,
-    click on a tile to get a detailed view of that tile.
+    While viewing
+    a map, click on a tile to get a detailed view of that tile. To close this detailed
+    view, simply click on it.
 
 
-    Pressing ''ESC'' while
-    viewing a map will bring up a menu with different options. Pressing ''ESC'' again
-    will close the menu.'
+    In case you want to load a new file or close
+    the application, click on the ''Back To Menu'' button and you will be brought
+    back to the main menu.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -763,7 +764,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22.85
+  m_fontSize: 21.7
   m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 1
