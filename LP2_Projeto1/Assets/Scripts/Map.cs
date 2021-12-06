@@ -1,11 +1,13 @@
+using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /// <summary>
 /// The <c>Map</c> class.
 /// Has all the content of a map created with the information given by the file
 /// loaded by the user.
 /// </summary>
-public class Map : MonoBehaviour
+public class Map
 {  
     
       // //////////////////////
@@ -57,6 +59,8 @@ public class Map : MonoBehaviour
     /// </summary>
     private Tile[,] _tiles;
 
+    private ICollection<Tile> _allTiles;
+
     /// <summary>
     /// Places a tile on the specified position.
     /// </summary>
@@ -89,5 +93,18 @@ public class Map : MonoBehaviour
     {
         _mapSize = mapSize;
         _tiles = new Tile[Rows, Cols];
+    }
+
+    public void CreateAllTilesContainer()
+    {
+        _allTiles = new List<Tile>(Rows * Cols);
+
+        for (int row = 0; row < Rows; row++)
+        {
+            for (int col = 0; col < Cols; col++)
+            {
+                _allTiles.Add(_tiles[row, col]);
+            }
+        }
     }
 }

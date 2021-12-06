@@ -148,6 +148,7 @@ public class Controller : MonoBehaviour
                 count++;
             }
         }
+        _mapContainer.Map.CreateAllTilesContainer();
         return true;
     }
 
