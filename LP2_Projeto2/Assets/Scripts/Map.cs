@@ -83,6 +83,27 @@ public class Map
         return _tiles[row, col];
     }
 
+    public int[] GetPosTile(Tile tile)
+    {
+        int[] pos = new int[2];
+
+        for (int row = 0; row < Rows; row++)
+        {
+            for (int col = 0; col < Cols; col++)
+            {
+                if(_tiles[row, col].CompareTile(tile))
+                {
+                    pos[0] = row;
+                    pos[1] = col;
+
+                    return pos;
+                }
+            }
+        }
+
+        return null;
+    }
+
     /// <summary>
     /// Sets the size of the map.
     /// </summary>
@@ -108,8 +129,29 @@ public class Map
         }
     }
 
-    public int FoodUnder3()
+
+    public int TilesWithTwoOrMoreRecurses()
     {
-        return allTiles.Count(t => t.FoodProduced > 4);
+        return allTiles.Count(t => t.Resources.Count >= 2);
+    }
+
+    public int TotalFoodInDesert()
+    {
+        return allTiles.Where(t => t.Terrain == TerrainType.Desert).Select(d => d.FoodProduced).Sum();
+    }
+
+    public IEnumerable<Tile> TilesWith3More()
+    {
+        return allTiles.Where(t => t.Resources.Count() >= 3).OrderBy(t => t.Resources.Count);
+    }
+
+    public bool AnyGrassWithLux()
+    {
+        return allTiles.Any(t => t.Terrain == TerrainType.Grassland && t.ExistResource(ResourceType.Luxury));
+    }
+
+    public Tile MoreFood()
+    {
+        return allTiles.OrderByDescending(t => t.FoodProduced).First();
     }
 }

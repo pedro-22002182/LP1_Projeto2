@@ -210,4 +210,28 @@ public class Tile : MonoBehaviour
         foreach (Resource r in resources)
             _resources.Add(r);
     }
+
+    public bool CompareTile(Tile otherTile)
+    {
+        if(otherTile.Terrain != this.Terrain)
+            return false;
+
+        if(otherTile.Resources.Count != this.Resources.Count)
+            return false;
+
+            //falta comparar recursos
+
+        return true;
+    }
+
+    public bool ExistResource(ResourceType otherResource)
+    {
+        foreach(Resource r in Resources)
+        {
+            if(r.Type == otherResource)
+                return true;
+        }
+
+        return false;
+    }
 }

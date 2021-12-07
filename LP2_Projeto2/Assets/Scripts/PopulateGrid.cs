@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 using TMPro;
 
 /// <summary>
@@ -196,11 +197,6 @@ public class PopulateGrid : MonoBehaviour
         }
     }
 
-    public void FoodUnder3()
-    {
-        textButFuture.text = "Tiles With Food > 3 = " + _mapContainer.Map.FoodUnder3();
-    }
-
     /// <summary>
     /// Destroy all children of gameobject
     /// </summary>
@@ -211,5 +207,61 @@ public class PopulateGrid : MonoBehaviour
         {
             Destroy(t.GetChild(i).gameObject);
         }
+    }
+
+    public void TilesTwoOrMoreResor()
+    {
+        textButFuture.text = "Tiles With Two or More Resources = " + _mapContainer.Map.TilesWithTwoOrMoreRecurses();
+    }
+
+    public void FoodDesert()
+    {
+        textButFuture.text = "Total Food in Desert = " + _mapContainer.Map.TotalFoodInDesert();
+    }
+
+    public void TilesWith3MoreRes()
+    {
+        string s = "";
+        IEnumerable<Tile> enumerable = _mapContainer.Map.TilesWith3More();
+
+        foreach(Tile t in enumerable)
+        {
+            s += t.Terrain + " |";
+
+            foreach(Resource r in t.Resources)
+            {
+                s += r.Type + ", ";
+            }
+
+            s += "| coord = " + _mapContainer.Map.GetPosTile(t)[0] + ", " + _mapContainer.Map.GetPosTile(t)[1];
+
+            s += "\n";
+        }
+
+        textButFuture.text = s;
+    }
+
+    public void AnyGrassLandWithLuxury()
+    {
+        textButFuture.text = "Existe GrassLand com Luxury? \n Resposta = " + _mapContainer.Map.AnyGrassWithLux();
+    }
+
+    public void TileMoreFood()
+    {
+        string s = "";
+        Tile tileWithMoreFood = _mapContainer.Map.MoreFood();
+
+        s += tileWithMoreFood.Terrain + " |";
+
+        foreach(Resource r in tileWithMoreFood.Resources)
+        {
+            s += r.Type + ", ";
+        }
+
+        s += "| coord = " + _mapContainer.Map.GetPosTile(tileWithMoreFood)[0] + ", " + _mapContainer.Map.GetPosTile(tileWithMoreFood)[1];
+
+        s += " | Food = " + tileWithMoreFood.FoodProduced;
+
+        textButFuture.text = s;
     }
 }
