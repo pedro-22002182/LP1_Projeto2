@@ -226,7 +226,7 @@ public class PopulateGrid : MonoBehaviour
 
         foreach(Tile t in enumerable)
         {
-            s += t.Terrain + " |";
+            s += t.Terrain + " | ";
 
             foreach(Resource r in t.Resources)
             {
@@ -243,15 +243,15 @@ public class PopulateGrid : MonoBehaviour
 
     public void AnyGrassLandWithLuxury()
     {
-        textButFuture.text = "Existe GrassLand com Luxury? \n Resposta = " + _mapContainer.Map.AnyGrassWithLux();
+        textButFuture.text = "Existe GrassLand com Luxury? \nResposta = " + _mapContainer.Map.AnyGrassWithLux();
     }
 
     public void TileMoreFood()
     {
-        string s = "";
+        string s = "Tile com maior valor de Food: \n";
         Tile tileWithMoreFood = _mapContainer.Map.MoreFood();
 
-        s += tileWithMoreFood.Terrain + " |";
+        s += tileWithMoreFood.Terrain + " | ";
 
         foreach(Resource r in tileWithMoreFood.Resources)
         {
