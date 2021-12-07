@@ -5,6 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using SimpleFileBrowser;
+using System.Linq;
 
 /// <summary>
 /// <c>The Controller class<c>

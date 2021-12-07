@@ -35,6 +35,9 @@ public class PopulateGrid : MonoBehaviour
     [SerializeField]
     private GridLayoutGroup _tilesGrid;
 
+    [SerializeField]
+    private TextMeshProUGUI textButFuture;
+
     /// <summary>
     /// Sets up the grid and populates it with the visual representation of
     /// the tiles.
@@ -191,6 +194,11 @@ public class PopulateGrid : MonoBehaviour
 
             newResource.GetComponent<Image>().color = tile.Resources[r].Color;
         }
+    }
+
+    public void FoodUnder3()
+    {
+        textButFuture.text = "Tiles With Food > 3 = " + _mapContainer.Map.FoodUnder3();
     }
 
     /// <summary>

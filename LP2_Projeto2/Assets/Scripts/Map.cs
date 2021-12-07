@@ -59,7 +59,7 @@ public class Map
     /// </summary>
     private Tile[,] _tiles;
 
-    private ICollection<Tile> _allTiles;
+    public ICollection<Tile> allTiles;
 
     /// <summary>
     /// Places a tile on the specified position.
@@ -97,14 +97,19 @@ public class Map
 
     public void CreateAllTilesContainer()
     {
-        _allTiles = new List<Tile>(Rows * Cols);
+        allTiles = new List<Tile>(Rows * Cols);
 
         for (int row = 0; row < Rows; row++)
         {
             for (int col = 0; col < Cols; col++)
             {
-                _allTiles.Add(_tiles[row, col]);
+                allTiles.Add(_tiles[row, col]);
             }
         }
+    }
+
+    public int FoodUnder3()
+    {
+        return allTiles.Count(t => t.FoodProduced > 4);
     }
 }
