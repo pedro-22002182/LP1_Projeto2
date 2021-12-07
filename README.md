@@ -1,5 +1,5 @@
-# I. Código
-# II. Pedro Passos 22002182
+## I. Código - B36AD
+## II. Pedro Passos 22002182
 
 
 # Projeto 1 de Linguagens de Programação 2 | 2021/2022
